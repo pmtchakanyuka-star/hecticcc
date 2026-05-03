@@ -54,6 +54,54 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .logo-g{color:var(--green);}
 .logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-bottom:2px;flex-shrink:0;}
 .header-trip{font-size:11px;color:var(--ink3);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:0.02em;}
+.header-trip-btn{display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;font-family:var(--fm);font-size:11px;color:var(--ink3);max-width:160px;padding:4px 8px;border-radius:var(--radius-xs);transition:background 0.15s;}
+.header-trip-btn:active{background:var(--bg2);}
+.header-trip-btn .trip-name-txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.header-trip-btn .trip-caret{flex-shrink:0;font-size:9px;}
+.back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;font-family:var(--fm);font-size:11px;color:var(--ink3);padding:4px 8px;border-radius:var(--radius-xs);}
+.back-btn:active{background:var(--bg2);}
+
+/* TRIP HOME SCREEN */
+.home-screen{padding:20px;}
+.home-section-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;margin-top:20px;}
+.home-section-label:first-child{margin-top:0;}
+.trip-list-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;cursor:pointer;margin-bottom:10px;box-shadow:var(--shadow-sm);transition:box-shadow 0.15s,border-color 0.15s;display:flex;align-items:flex-start;gap:14px;}
+.trip-list-card:active{box-shadow:none;border-color:var(--border2);}
+.trip-list-card.past{opacity:0.65;}
+.trip-list-left{flex:1;min-width:0;}
+.trip-list-name{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.2;}
+.trip-list-dates{font-size:11px;color:var(--ink3);margin-bottom:10px;}
+.trip-list-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.trip-member-stack{display:flex;}
+.trip-member-av{width:22px;height:22px;border-radius:50%;border:2px solid var(--surface);margin-left:-6px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:9px;font-weight:700;font-style:italic;}
+.trip-member-av:first-child{margin-left:0;}
+.trip-open-badge{font-size:10px;color:var(--gold);background:var(--gold-l);border:1px solid rgba(196,154,16,0.3);padding:2px 8px;border-radius:20px;}
+.trip-decided-badge{font-size:10px;color:var(--green);background:var(--green-l);border:1px solid rgba(58,107,74,0.3);padding:2px 8px;border-radius:20px;}
+.trip-list-arrow{font-size:16px;color:var(--ink3);flex-shrink:0;margin-top:2px;}
+.home-new-btn{width:100%;min-height:48px;border-radius:var(--radius);border:1.5px dashed var(--border2);background:none;color:var(--ink2);font-family:var(--fh);font-size:15px;font-weight:600;font-style:italic;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.home-new-btn:active{background:var(--bg2);}
+.empty-home{text-align:center;padding:48px 20px;}
+.empty-home-icon{font-size:36px;margin-bottom:12px;}
+.empty-home-title{font-family:var(--fh);font-size:20px;font-weight:700;font-style:italic;color:var(--ink);margin-bottom:8px;}
+.empty-home-sub{font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:20px;}
+
+/* TRIP SWITCHER DROPDOWN */
+.switcher-overlay{display:none;position:fixed;inset:0;z-index:200;}
+.switcher-overlay.open{display:block;}
+.switcher-dropdown{position:fixed;top:56px;right:0;left:0;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(60,45,30,0.12);z-index:201;max-height:60vh;overflow-y:auto;}
+.switcher-inner{padding:12px 16px;}
+.switcher-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+.switcher-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;transition:background 0.1s;}
+.switcher-item:active,.switcher-item:hover{background:var(--bg2);}
+.switcher-item.active-trip{background:var(--green-l);}
+.switcher-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.switcher-dot.upcoming{background:var(--green);}
+.switcher-dot.past{background:var(--ink3);}
+.switcher-item-name{font-family:var(--fh);font-size:14px;font-weight:600;color:var(--ink);flex:1;}
+.switcher-item-dates{font-size:10px;color:var(--ink3);}
+.switcher-divider{height:1px;background:var(--border);margin:8px 0;}
+.switcher-new{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;color:var(--green);font-size:13px;font-family:var(--fh);font-weight:600;font-style:italic;}
+.switcher-new:active{background:var(--green-l);}
 
 /* ── IDENTITY ── */
 .id-zone{background:var(--bg2);border-bottom:1px solid var(--border);}
@@ -418,14 +466,26 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div></div>
 </div>
 
+<!-- TRIP SWITCHER DROPDOWN -->
+<div class="switcher-overlay" id="switcher-overlay" onclick="closeSwitcher()"></div>
+<div class="switcher-dropdown" id="switcher-dropdown" style="display:none">
+  <div class="switcher-inner" id="switcher-inner"></div>
+</div>
+
 <!-- SHELL -->
 <div class="header">
   <div class="header-inner">
-    <div class="logo">
+    <div class="logo" style="cursor:pointer" onclick="goHome()">
       <span class="logo-word"><span class="logo-r">H</span>WM<span class="logo-g">B</span></span>
       <div class="logo-dot"></div>
     </div>
-    <div class="header-trip" id="header-trip">No trip loaded</div>
+    <div style="display:flex;align-items:center;gap:4px">
+      <button class="header-trip-btn" id="header-trip-btn" onclick="toggleSwitcher()" style="display:none">
+        <span class="trip-name-txt" id="header-trip-txt">No trip</span>
+        <span class="trip-caret">&#9662;</span>
+      </button>
+      <button class="back-btn" id="back-btn" onclick="goHome()" style="display:none">&#8592; All trips</button>
+    </div>
   </div>
 </div>
 <div class="id-zone" id="id-zone"></div>
@@ -450,58 +510,171 @@ const sbApi=(path,opts={})=>{
 
 let me=localStorage.getItem('hwmb_me')||'';
 let currentTab='decisions';
+let currentScreen='home'; // 'home' | 'trip'
 let editingSlotId=null,editingOptId=null,activeSlotId=null;
 let currentSlotType='vote';
 let scores={},touchedOpts={};
 let confirmCb=null;
 let expandedTl={};
+let allTrips=[];
 const S={trip:null,slots:[],options:{},votes:{}};
 
-// ── DEMO ──
+// ── DEMO DATA ──
 const DD={
-  trip:{id:'dt1',title:'Ube Glamping Weekend',start_date:'2026-05-16',end_date:'2026-05-18',member_names:['phil','kenji','aoi','yuki'],created_by:'phil'},
-  slots:[
-    {id:'ds1',title:"Phil & Kenji's Stay",date:'2026-05-17',slot_order:0,criteria:['price','location','vibe'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:['phil','kenji']},
-    {id:'ds2',title:"Girls' Night Stay",date:'2026-05-17',slot_order:1,criteria:[],status:'decided',chosen_option_id:'do-g',created_by:'aoi',slot_type:'fixed',voters:['aoi','yuki']},
-    {id:'ds3',title:'Sunday Lunch',date:'2026-05-18',slot_order:2,criteria:['price','vibe'],status:'deciding',chosen_option_id:null,created_by:'kenji',slot_type:'vote',voters:[]},
+  trips:[
+    {id:'dt1',title:'Ube Glamping Weekend',start_date:'2026-05-16',end_date:'2026-05-18',member_names:['phil','kenji','aoi','yuki'],created_by:'phil'},
+    {id:'dt2',title:'Osaka Foodie Run',start_date:'2026-03-08',end_date:'2026-03-09',member_names:['phil','kenji','aoi','yuki'],created_by:'kenji'},
+    {id:'dt3',title:'Hiroshima Day Trip',start_date:'2026-01-20',end_date:'2026-01-20',member_names:['phil','kenji'],created_by:'phil'},
   ],
+  slots:{
+    dt1:[
+      {id:'ds1',trip_id:'dt1',title:"Phil & Kenji's Stay",date:'2026-05-17',slot_order:0,criteria:['price','location','vibe'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:['phil','kenji']},
+      {id:'ds2',trip_id:'dt1',title:"Girls' Night Stay",date:'2026-05-17',slot_order:1,criteria:[],status:'decided',chosen_option_id:'do-g',created_by:'aoi',slot_type:'fixed',voters:['aoi','yuki']},
+      {id:'ds3',trip_id:'dt1',title:'Sunday Lunch',date:'2026-05-18',slot_order:2,criteria:['price','vibe'],status:'deciding',chosen_option_id:null,created_by:'kenji',slot_type:'vote',voters:[]},
+    ],
+    dt2:[
+      {id:'ds4',trip_id:'dt2',title:'Saturday Dinner',date:'2026-03-08',slot_order:0,criteria:['price','vibe','food'],status:'decided',chosen_option_id:'do4',created_by:'kenji',slot_type:'vote',voters:[]},
+    ],
+    dt3:[
+      {id:'ds5',trip_id:'dt3',title:'Lunch spot',date:'2026-01-20',slot_order:0,criteria:['price','location'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:[]},
+    ],
+  },
   options:{
     ds1:[
       {id:'do1',slot_id:'ds1',title:'Forest Glamping',price_label:'¥14,000/night',image_url:'',url:'',maps_url:'',notes:'Private outdoor bath, BBQ included',option_order:0,created_by:'phil'},
-      {id:'do2',slot_id:'ds1',title:'Riverside Tent Camp',price_label:'¥8,000/night',image_url:'',url:'',maps_url:'',notes:'Budget option, shared facilities but great vibes',option_order:1,created_by:'kenji'},
+      {id:'do2',slot_id:'ds1',title:'Riverside Tent Camp',price_label:'¥8,000/night',image_url:'',url:'',maps_url:'',notes:'Budget option, shared facilities',option_order:1,created_by:'kenji'},
     ],
-    ds2:[{id:'do-g',slot_id:'ds2',title:'Auberge du Soleil',price_label:'¥28,000/night',image_url:'',url:'',maps_url:'',notes:'Boutique hotel, breakfast included. Already booked!',option_order:0,created_by:'aoi'}],
-    ds3:[{id:'do3',slot_id:'ds3',title:'Kawara Soba Takase',price_label:'~¥1,800/person',image_url:'',url:'',maps_url:'',notes:'Famous local specialty, river view seating',option_order:0,created_by:'kenji'}],
+    ds2:[{id:'do-g',slot_id:'ds2',title:'Auberge du Soleil',price_label:'¥28,000/night',image_url:'',url:'',maps_url:'',notes:'Boutique hotel, breakfast included',option_order:0,created_by:'aoi'}],
+    ds3:[{id:'do3',slot_id:'ds3',title:'Kawara Soba Takase',price_label:'~¥1,800/person',image_url:'',url:'',maps_url:'',notes:'Famous local specialty, river view',option_order:0,created_by:'kenji'}],
+    ds4:[{id:'do4',slot_id:'ds4',title:'Hajime',price_label:'¥18,000/person',image_url:'',url:'',maps_url:'',notes:'3 Michelin stars — unforgettable',option_order:0,created_by:'kenji'}],
+    ds5:[{id:'do5',slot_id:'ds5',title:'Sandankyo Cafe',price_label:'~¥1,200/person',image_url:'',url:'',maps_url:'',notes:'Near the gorge, great views',option_order:0,created_by:'phil'}],
   },
-  votes:{ds1:[],ds2:[],ds3:[]}
+  votes:{ds1:[],ds2:[],ds3:[],ds4:[{id:'v1',slot_id:'ds4',voter_name:'kenji',scores:{do4:{price:4,vibe:5,food:5}}},{id:'v2',slot_id:'ds4',voter_name:'phil',scores:{do4:{price:3,vibe:5,food:5}}},{id:'v3',slot_id:'ds4',voter_name:'aoi',scores:{do4:{price:4,vibe:5,food:5}}},{id:'v4',slot_id:'ds4',voter_name:'yuki',scores:{do4:{price:3,vibe:4,food:5}}}],ds5:[]}
 };
 
-function avatarColor(name,idx){
+function avatarColor(name){
   if(!name)return AVATAR_PALETTE[0];
   const i=Math.abs([...name].reduce((a,c)=>a+c.charCodeAt(0),0))%AVATAR_PALETTE.length;
   return AVATAR_PALETTE[i];
 }
 
+// ── LOAD ALL TRIPS ──
 async function load(){
   loading(true);
-  if(DEMO){S.trip=DD.trip;S.slots=DD.slots;S.options=JSON.parse(JSON.stringify(DD.options));S.votes=JSON.parse(JSON.stringify(DD.votes));}
-  else{
+  if(DEMO){
+    allTrips=DD.trips;
+    // pre-load first trip data
+    S.options={};S.votes={};
+    for(const sl of DD.slots.dt1||[]){
+      S.options[sl.id]=DD.options[sl.id]||[];
+      S.votes[sl.id]=JSON.parse(JSON.stringify(DD.votes[sl.id]||[]));
+    }
+  } else {
     try{
-      const trips=await sbApi('trips?select=*&order=created_at.desc&limit=1');
-      if(trips&&trips.length){
-        S.trip=trips[0];
-        S.slots=await sbApi(`slots?trip_id=eq.${S.trip.id}&select=*&order=slot_order,date`)||[];
-        for(const s of S.slots){
-          S.options[s.id]=await sbApi(`options?slot_id=eq.${s.id}&select=*&order=option_order`)||[];
-          S.votes[s.id]=await sbApi(`votes?slot_id=eq.${s.id}&select=*`)||[];
-        }
+      allTrips=await sbApi('trips?select=*&order=created_at.desc')||[];
+    }catch{toast('Connection error','err');}
+  }
+  loading(false);
+  currentScreen='home';
+  renderAll();
+}
+
+// ── LOAD SINGLE TRIP ──
+async function loadTrip(tripId){
+  loading(true);
+  if(DEMO){
+    const trip=allTrips.find(t=>t.id===tripId);
+    S.trip=trip||null;
+    S.slots=DD.slots[tripId]||[];
+    S.options={};S.votes={};
+    for(const sl of S.slots){
+      S.options[sl.id]=DD.options[sl.id]||[];
+      S.votes[sl.id]=JSON.parse(JSON.stringify(DD.votes[sl.id]||[]));
+    }
+  } else {
+    try{
+      S.trip=allTrips.find(t=>t.id===tripId)||null;
+      S.slots=await sbApi(`slots?trip_id=eq.${tripId}&select=*&order=slot_order,date`)||[];
+      S.options={};S.votes={};
+      for(const s of S.slots){
+        S.options[s.id]=await sbApi(`options?slot_id=eq.${s.id}&select=*&order=option_order`)||[];
+        S.votes[s.id]=await sbApi(`votes?slot_id=eq.${s.id}&select=*`)||[];
       }
     }catch{toast('Connection error','err');}
   }
-  loading(false);renderAll();
+  currentScreen='trip';
+  currentTab='decisions';
+  loading(false);
+  renderAll();
 }
 
-function renderAll(){renderIdZone();renderTabs();renderMain();}
+function goHome(){
+  closeSwitcher();
+  currentScreen='home';
+  S.trip=null;S.slots=[];S.options={};S.votes={};
+  renderAll();
+}
+
+function renderAll(){renderIdZone();renderTabs();renderHeader();renderMain();}
+
+// ── HEADER STATE ──
+function renderHeader(){
+  const tripBtn=document.getElementById('header-trip-btn');
+  const backBtn=document.getElementById('back-btn');
+  const tripTxt=document.getElementById('header-trip-txt');
+  if(currentScreen==='trip'&&S.trip){
+    tripBtn.style.display='flex';backBtn.style.display='flex';
+    tripTxt.textContent=S.trip.title;
+  } else {
+    tripBtn.style.display='none';backBtn.style.display='none';
+  }
+}
+
+// ── TRIP SWITCHER ──
+function toggleSwitcher(){
+  const dd=document.getElementById('switcher-dropdown');
+  const ov=document.getElementById('switcher-overlay');
+  const open=dd.style.display==='none';
+  if(open){
+    renderSwitcherContent();
+    dd.style.display='block';ov.classList.add('open');
+  } else {closeSwitcher();}
+}
+function closeSwitcher(){
+  document.getElementById('switcher-dropdown').style.display='none';
+  document.getElementById('switcher-overlay').classList.remove('open');
+}
+function renderSwitcherContent(){
+  const today=new Date().toISOString().slice(0,10);
+  const upcoming=allTrips.filter(t=>!t.end_date||t.end_date>=today);
+  const past=allTrips.filter(t=>t.end_date&&t.end_date<today);
+  let html='';
+  if(upcoming.length){
+    html+=`<div class="switcher-label">Upcoming</div>`;
+    html+=upcoming.map(t=>switcherItem(t)).join('');
+  }
+  if(past.length){
+    if(upcoming.length)html+=`<div class="switcher-divider"></div>`;
+    html+=`<div class="switcher-label">Past</div>`;
+    html+=past.map(t=>switcherItem(t)).join('');
+  }
+  html+=`<div class="switcher-divider"></div>
+    <div class="switcher-new" onclick="closeSwitcher();openTripModal()">+ New trip</div>`;
+  document.getElementById('switcher-inner').innerHTML=html;
+}
+function switcherItem(t){
+  const today=new Date().toISOString().slice(0,10);
+  const isUpcoming=!t.end_date||t.end_date>=today;
+  const isCurrent=S.trip?.id===t.id;
+  return `<div class="switcher-item${isCurrent?' active-trip':''}" onclick="closeSwitcher();loadTrip('${t.id}')">
+    <div class="switcher-dot ${isUpcoming?'upcoming':'past'}"></div>
+    <div style="flex:1;min-width:0">
+      <div class="switcher-item-name">${t.title}</div>
+      <div class="switcher-item-dates">${fmtRange(t.start_date,t.end_date)}</div>
+    </div>
+    ${isCurrent?'<span style="font-size:11px;color:var(--green)">&#10003;</span>':''}
+  </div>`;
+}
 
 function av(name,size='md'){
   const col=avatarColor(name);
@@ -512,7 +685,7 @@ function av(name,size='md'){
 function renderIdZone(){
   const members=S.trip?.member_names||[];
   const el=document.getElementById('id-zone');
-  if(!members.length){el.innerHTML='';return;}
+  if(currentScreen==='home'||!members.length){el.innerHTML='';return;}
   if(!me||!members.includes(me)){
     el.innerHTML=`<div class="who-picker">
       <div class="who-title">Who are you?</div>
@@ -531,7 +704,7 @@ function renderIdZone(){
 
 function renderTabs(){
   const t=document.getElementById('tabs');
-  if(!S.trip){t.style.display='none';return;}
+  if(currentScreen!=='trip'||!S.trip){t.style.display='none';return;}
   t.style.display='flex';
   const dTab=document.getElementById('tab-decisions');
   const iTab=document.getElementById('tab-itinerary');
@@ -543,14 +716,60 @@ function switchTab(tab){currentTab=tab;renderTabs();renderMain();}
 
 function renderMain(){
   const el=document.getElementById('main');
-  document.getElementById('header-trip').textContent=S.trip?S.trip.title:'No trip loaded';
-  if(!S.trip){
-    el.innerHTML=`${DEMO?`<div class="config-warn">Demo mode — replace SUPABASE_URL + SUPABASE_KEY in the script to go live.</div>`:''}
-    <div class="empty-itin"><div class="empty-itin-icon">🌿</div><div class="empty-itin-title">No trip yet</div><div class="empty-itin-sub">Create your first trip to get started.</div>
-    <button class="btn-main green-btn" style="width:auto;padding:0 28px;margin:16px auto 0" onclick="openTripModal()">Create trip</button></div>`;
-    return;
-  }
+  if(currentScreen==='home'){renderHome(el);return;}
+  if(!S.trip){renderHome(el);return;}
   currentTab==='itinerary'?renderItinerary(el):renderDecisions(el);
+}
+
+// ── HOME SCREEN ──
+function renderHome(el){
+  const today=new Date().toISOString().slice(0,10);
+  const upcoming=allTrips.filter(t=>!t.end_date||t.end_date>=today);
+  const past=allTrips.filter(t=>t.end_date&&t.end_date<today);
+
+  function tripCard(t){
+    const slots=DEMO?(DD.slots[t.id]||[]):(t.id===S.trip?.id?S.slots:[]);
+    const openDecisions=slots.filter(s=>s.slot_type!=='fixed'&&s.status!=='decided').length;
+    const decided=slots.filter(s=>s.status==='decided'||s.slot_type==='fixed').length;
+    const members=t.member_names||[];
+    const memberAvatars=members.slice(0,5).map((m,i)=>`<div class="trip-member-av ${avatarColor(m)}" style="z-index:${10-i};background:var(--${avatarColor(m)}-light);color:var(--${avatarColor(m)})">${m[0].toUpperCase()}</div>`).join('');
+    const extraMembers=members.length>5?`<div class="trip-member-av" style="background:var(--bg3);color:var(--ink3);z-index:5">+${members.length-5}</div>`:'';
+    const isPast=t.end_date&&t.end_date<today;
+    return `<div class="trip-list-card${isPast?' past':''}" onclick="loadTrip('${t.id}')">
+      <div class="trip-list-left">
+        <div class="trip-list-name">${t.title}</div>
+        <div class="trip-list-dates">${fmtRange(t.start_date,t.end_date)}</div>
+        <div class="trip-list-meta">
+          <div class="trip-member-stack">${memberAvatars}${extraMembers}</div>
+          ${openDecisions>0?`<span class="trip-open-badge">${openDecisions} open</span>`:''}
+          ${decided>0?`<span class="trip-decided-badge">${decided} decided</span>`:''}
+        </div>
+      </div>
+      <div class="trip-list-arrow">›</div>
+    </div>`;
+  }
+
+  let html=`${DEMO?`<div class="config-warn">Demo mode — replace SUPABASE_URL + SUPABASE_KEY to go live.</div>`:''}
+  <div class="home-screen">`;
+
+  if(!allTrips.length){
+    html+=`<div class="empty-home">
+      <div class="empty-home-icon">🌿</div>
+      <div class="empty-home-title">No trips yet</div>
+      <div class="empty-home-sub">Create your first trip and invite your crew.</div>
+    </div>`;
+  } else {
+    if(upcoming.length){
+      html+=`<div class="home-section-label">Upcoming</div>`;
+      html+=upcoming.map(tripCard).join('');
+    }
+    if(past.length){
+      html+=`<div class="home-section-label"${upcoming.length?' style="margin-top:24px"':''}>Past</div>`;
+      html+=past.map(tripCard).join('');
+    }
+  }
+  html+=`<button class="home-new-btn" onclick="openTripModal()">+ New trip</button></div>`;
+  el.innerHTML=html;
 }
 
 // ── DECISIONS ──
@@ -869,12 +1088,12 @@ async function saveTrip(){
   const data={title,start_date:document.getElementById('tf-start').value||null,end_date:document.getElementById('tf-end').value||null,member_names:members,created_by:editingSlotId?S.trip?.created_by:me||members[0]||'unknown'};
   loading(true);
   if(editingSlotId){
-    if(DEMO)Object.assign(S.trip,data);
-    else{const r=await sbApi(`trips?id=eq.${S.trip.id}`,{method:'PATCH',body:JSON.stringify(data)});if(r&&r[0])S.trip=r[0];}
+    if(DEMO){Object.assign(S.trip,data);const i=allTrips.findIndex(t=>t.id===S.trip.id);if(i>-1)allTrips[i]={...allTrips[i],...data};}
+    else{const r=await sbApi(`trips?id=eq.${S.trip.id}`,{method:'PATCH',body:JSON.stringify(data)});if(r&&r[0]){S.trip=r[0];const i=allTrips.findIndex(t=>t.id===S.trip.id);if(i>-1)allTrips[i]=S.trip;}}
     toast('Trip updated','ok');
   } else {
-    if(DEMO){S.trip={id:'t'+Date.now(),...data};S.slots=[];S.options={};S.votes={};}
-    else{const r=await sbApi('trips',{method:'POST',body:JSON.stringify(data)});if(r&&r[0]){S.trip=r[0];S.slots=[];S.options={};S.votes={};}}
+    if(DEMO){const nt={id:'t'+Date.now(),...data};allTrips.unshift(nt);S.trip=nt;S.slots=[];S.options={};S.votes={};DD.slots[nt.id]=[];currentScreen='trip';}
+    else{const r=await sbApi('trips',{method:'POST',body:JSON.stringify(data)});if(r&&r[0]){allTrips.unshift(r[0]);S.trip=r[0];S.slots=[];S.options={};S.votes={};currentScreen='trip';}}
     toast('Trip created!','ok');
   }
   if(me&&members.length&&!members.includes(me)){me='';localStorage.removeItem('hwmb_me');}
