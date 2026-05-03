@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hecticcc Weekend My Bru</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #FAFAF8;
+  --bg2:       #F4F2EE;
+  --bg3:       #EDE9E3;
+  --surface:   #FFFFFF;
+  --border:    rgba(60,45,30,0.10);
+  --border2:   rgba(60,45,30,0.18);
+  --border3:   rgba(60,45,30,0.28);
+  --ink:       #1C160F;
+  --ink2:      #5C4F3A;
+  --ink3:      #9C8C70;
+  --red:       #B84A2F;
+  --red-light: #F9EDE9;
+  --red-mid:   rgba(184,74,47,0.12);
+  --gold:      #C49A10;
+  --gold-light:#FBF5E2;
+  --gold-mid:  rgba(196,154,16,0.13);
+  --green:     #3A6B4A;
+  --green-light:#EAF2EC;
+  --green-mid: rgba(58,107,74,0.12);
+  --fixed-col: #5A6B3A;
+  --fixed-light:#EFF2E8;
+  --radius:    14px;
+  --radius-sm: 10px;
+  --radius-xs: 7px;
+  --shadow:    0 1px 3px rgba(60,45,30,0.07), 0 4px 16px rgba(60,45,30,0.05);
+  --shadow-sm: 0 1px 2px rgba(60,45,30,0.06);
+  --fh: 'Playfair Display', Georgia, serif;
+  --fm: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--fm);font-size:13px;line-height:1.6;overscroll-behavior:none;}
+::selection{background:var(--gold-mid);color:var(--ink);}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* ── GRAIN OVERLAY ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:rgba(250,250,248,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 20px;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:56px;}
+.logo{display:flex;align-items:baseline;gap:6px;}
+.logo-word{font-family:var(--fh);font-size:22px;font-weight:900;font-style:italic;letter-spacing:-0.5px;line-height:1;}
+.logo-r{color:var(--red);}
+.logo-g{color:var(--green);}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-bottom:2px;flex-shrink:0;}
+.header-trip{font-size:11px;color:var(--ink3);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:0.02em;}
+
+/* ── IDENTITY ── */
+.id-zone{background:var(--bg2);border-bottom:1px solid var(--border);}
+.who-picker{padding:20px;}
+.who-title{font-family:var(--fh);font-size:20px;font-weight:700;margin-bottom:3px;color:var(--ink);}
+.who-sub{font-size:11px;color:var(--ink3);margin-bottom:16px;letter-spacing:0.02em;}
+.member-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.member-btn{display:flex;align-items:center;gap:9px;padding:10px 15px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-family:var(--fm);font-size:12px;color:var(--ink);min-height:44px;box-shadow:var(--shadow-sm);transition:border-color 0.15s,box-shadow 0.15s;}
+.member-btn:active{box-shadow:none;border-color:var(--border3);}
+.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fh);font-size:12px;font-weight:700;font-style:italic;}
+.avatar.red{background:var(--red-light);color:var(--red);}
+.avatar.gold{background:var(--gold-light);color:var(--gold);}
+.avatar.green{background:var(--green-light);color:var(--green);}
+.avatar.fixed{background:var(--fixed-light);color:var(--fixed-col);}
+.avatar-colors=['red','gold','green','fixed'];
+.id-bar{padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.id-bar-left{display:flex;align-items:center;gap:10px;}
+.id-name{font-family:var(--fh);font-size:15px;font-weight:600;font-style:italic;color:var(--ink);}
+.id-role{font-size:10px;color:var(--ink3);letter-spacing:0.04em;}
+.btn-switch{background:none;border:1px solid var(--border2);color:var(--ink2);font-family:var(--fm);font-size:10px;padding:5px 12px;border-radius:30px;cursor:pointer;letter-spacing:0.03em;}
+.btn-switch:active{background:var(--bg2);}
+
+/* ── TABS ── */
+.tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--border);background:var(--surface);}
+.tab{padding:14px 4px;margin-right:24px;font-family:var(--fm);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;border:none;background:none;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.15s,border-color 0.15s;}
+.tab.active-r{color:var(--red);border-bottom-color:var(--red);}
+.tab.active-g{color:var(--green);border-bottom-color:var(--green);}
+
+/* ── MAIN ── */
+.main{padding:20px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;}
+
+/* ── TRIP CARD ── */
+.trip-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:18px 20px;box-shadow:var(--shadow);}
+.trip-eyebrow{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;}
+.trip-name{font-family:var(--fh);font-size:26px;font-weight:900;line-height:1.15;letter-spacing:-0.5px;color:var(--ink);margin-bottom:4px;}
+.trip-dates{font-size:11px;color:var(--ink3);margin-bottom:14px;}
+.member-row{display:flex;flex-wrap:wrap;gap:6px;}
+.m-chip{display:flex;align-items:center;gap:5px;padding:4px 10px 4px 5px;border-radius:30px;font-size:11px;background:var(--bg2);border:1px solid var(--border);}
+.m-chip .av-sm{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:8px;font-weight:700;font-style:italic;}
+.m-chip.you{background:var(--green-light);border-color:rgba(58,107,74,0.25);color:var(--green);}
+.m-chip.you .av-sm{background:var(--green);color:#fff;}
+
+/* ── SECTION ── */
+.sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.sec-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);}
+.btn-add{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:30px;border:1px solid var(--border2);background:var(--surface);color:var(--ink);font-family:var(--fm);font-size:11px;cursor:pointer;box-shadow:var(--shadow-sm);}
+.btn-add:active{box-shadow:none;}
+.btn-group{display:flex;gap:6px;}
+
+/* ── SLOT CARD ── */
+.slot-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+.slot-card.fixed-type{border-left:3px solid var(--fixed-col);}
+.slot-head{padding:16px 18px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;}
+.slot-head:active{background:var(--bg);}
+.slot-color-bar{width:3px;border-radius:2px;align-self:stretch;flex-shrink:0;margin-top:2px;}
+.slot-color-bar.deciding{background:var(--gold);}
+.slot-color-bar.voted{background:var(--green);}
+.slot-color-bar.decided{background:var(--green);}
+.slot-color-bar.fixed{background:var(--fixed-col);}
+.slot-main{flex:1;min-width:0;}
+.slot-eyebrow{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px;}
+.slot-title{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px;}
+.slot-meta{font-size:11px;color:var(--ink3);}
+.slot-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.badge{padding:3px 9px;border-radius:30px;font-size:10px;font-family:var(--fm);letter-spacing:0.03em;border:1px solid;}
+.badge.deciding{border-color:rgba(196,154,16,0.4);color:var(--gold);background:var(--gold-light);}
+.badge.voted{border-color:rgba(58,107,74,0.3);color:var(--green);background:var(--green-light);}
+.badge.decided{border-color:rgba(58,107,74,0.3);color:var(--green);background:var(--green-light);}
+.badge.fixed{border-color:rgba(90,107,58,0.3);color:var(--fixed-col);background:var(--fixed-light);}
+.chevron{font-size:10px;color:var(--ink3);transition:transform 0.25s;line-height:1;}
+.chevron.open{transform:rotate(180deg);}
+.slot-body{border-top:1px solid var(--border);display:none;}
+.slot-body.open{display:block;}
+
+/* ── FIXED SUMMARY ── */
+.fixed-summary{padding:16px 18px;display:flex;gap:14px;}
+.fixed-thumb{width:60px;height:60px;border-radius:var(--radius-sm);overflow:hidden;flex-shrink:0;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--ink3);}
+.fixed-thumb img{width:100%;height:100%;object-fit:cover;}
+.fixed-info{flex:1;min-width:0;}
+.fixed-opt-name{font-family:var(--fh);font-size:15px;font-weight:700;margin-bottom:2px;color:var(--ink);}
+.fixed-opt-meta{font-size:11px;color:var(--ink3);margin-bottom:8px;}
+.link-row{display:flex;gap:6px;flex-wrap:wrap;}
+.pill-link{font-size:11px;color:var(--green);border:1px solid rgba(58,107,74,0.3);padding:4px 11px;border-radius:30px;text-decoration:none;background:var(--green-light);}
+.pill-link:active{opacity:0.7;}
+.pill-link.red-link{color:var(--red);border-color:rgba(184,74,47,0.3);background:var(--red-light);}
+
+/* ── OPTION CARDS ── */
+.options-wrap{padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+.opt-card{border-radius:var(--radius-sm);border:1px solid var(--border);overflow:hidden;background:var(--bg);}
+.opt-card.winner-card{border-color:rgba(58,107,74,0.4);border-width:1.5px;}
+.opt-img{width:100%;height:130px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;}
+.opt-img img{width:100%;height:100%;object-fit:cover;}
+.opt-body{padding:13px 14px;}
+.opt-name{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.chosen-tag{font-size:10px;padding:2px 8px;border-radius:30px;background:var(--green-light);color:var(--green);border:1px solid rgba(58,107,74,0.3);}
+.opt-byline{font-size:11px;color:var(--ink3);margin-bottom:5px;}
+.opt-price{font-size:12px;color:var(--gold);font-weight:500;margin-bottom:8px;}
+.opt-notes{font-size:11px;color:var(--ink2);line-height:1.6;margin-top:4px;}
+.opt-cta-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.opt-edit-row{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.btn-micro{padding:5px 11px;border-radius:30px;border:1px solid var(--border2);background:none;color:var(--ink2);font-family:var(--fm);font-size:10px;cursor:pointer;letter-spacing:0.02em;}
+.btn-micro.danger{border-color:rgba(184,74,47,0.3);color:var(--red);}
+.btn-micro:active{background:var(--bg2);}
+
+/* ── VOTING ── */
+.vote-block{margin-top:12px;border-top:1px solid var(--border);padding-top:12px;}
+.vote-section-label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.crit-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.crit-label{font-size:11px;color:var(--ink2);width:68px;flex-shrink:0;text-transform:capitalize;}
+.stars{display:flex;gap:1px;}
+.star{font-size:22px;cursor:pointer;color:var(--bg3);line-height:1;padding:2px 4px;min-width:30px;text-align:center;transition:color 0.1s;}
+.star.lit{color:var(--gold);}
+
+/* ── SLOT FOOTER ── */
+.slot-foot{padding:0 18px 16px;display:flex;flex-direction:column;gap:8px;}
+.btn-main{width:100%;min-height:48px;border-radius:var(--radius-sm);border:none;font-family:var(--fh);font-size:15px;font-weight:700;font-style:italic;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:-0.2px;transition:opacity 0.15s;}
+.btn-main:active{opacity:0.8;}
+.btn-main:disabled{opacity:0.35;cursor:not-allowed;}
+.btn-main.green-btn{background:var(--green);color:#fff;}
+.btn-main.red-btn{background:var(--red);color:#fff;}
+.btn-main.gold-btn{background:var(--gold);color:#fff;}
+.btn-outline{width:100%;min-height:44px;border-radius:var(--radius-sm);background:none;color:var(--ink);border:1px solid var(--border2);font-family:var(--fm);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-outline:active{background:var(--bg2);}
+.btn-outline.danger{border-color:rgba(184,74,47,0.25);color:var(--red);}
+.voted-ok{background:var(--green-light);border:1px solid rgba(58,107,74,0.25);border-radius:var(--radius-sm);padding:11px 14px;font-size:12px;color:var(--green);text-align:center;font-family:var(--fm);}
+.vote-hint{font-size:11px;color:var(--ink3);text-align:center;padding:4px 0;line-height:1.5;}
+.confirm-banner{background:var(--green-light);border:1px solid rgba(58,107,74,0.25);border-radius:var(--radius-sm);padding:13px 16px;}
+.confirm-banner-name{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--green);margin-bottom:2px;}
+.confirm-banner-sub{font-size:11px;color:var(--ink3);}
+
+/* ── RESULTS ── */
+.results-wrap{margin:0 18px 16px;padding:14px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);}
+.results-eyebrow{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.result-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.result-name{font-size:11px;width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;color:var(--ink2);}
+.result-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.result-fill{height:100%;border-radius:3px;transition:width 0.6s cubic-bezier(.34,1.56,.64,1);}
+.result-fill.top{background:var(--green);}
+.result-fill.rest{background:var(--gold);}
+.result-score{font-size:10px;color:var(--ink3);width:26px;text-align:right;flex-shrink:0;}
+.result-crown{font-size:11px;}
+.waiting-txt{font-size:12px;color:var(--ink2);line-height:1.6;}
+.prog-row{display:flex;align-items:center;gap:10px;margin-top:10px;}
+.prog-track{flex:1;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--green);border-radius:2px;transition:width 0.4s ease;}
+.prog-label{font-size:10px;color:var(--ink3);white-space:nowrap;}
+.voters-txt{font-size:10px;color:var(--ink3);margin-top:6px;}
+
+/* ── INFO BUBBLE ── */
+.ib{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--border2);color:var(--ink3);font-size:9px;cursor:default;position:relative;vertical-align:middle;margin-left:3px;flex-shrink:0;}
+.ib-tip{display:none;position:absolute;left:18px;top:-4px;background:var(--ink);color:var(--bg);font-size:11px;border-radius:var(--radius-xs);padding:7px 10px;width:200px;z-index:200;line-height:1.5;font-weight:400;}
+.ib:hover .ib-tip,.ib:focus .ib-tip{display:block;}
+
+/* ── ITINERARY TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:4px;}
+.day-group{margin-bottom:24px;}
+.day-header{display:flex;align-items:flex-end;gap:12px;margin-bottom:14px;}
+.day-name{font-family:var(--fh);font-size:24px;font-weight:900;font-style:italic;color:var(--ink);line-height:1;}
+.day-date-label{font-size:11px;color:var(--ink3);margin-bottom:3px;}
+.day-rule{flex:1;height:1px;background:var(--border);margin-bottom:6px;}
+.tl-items{display:flex;flex-direction:column;gap:0;}
+.tl-row{display:flex;gap:14px;position:relative;}
+.tl-spine{display:flex;flex-direction:column;align-items:center;padding-top:18px;width:16px;flex-shrink:0;}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:2px solid var(--surface);}
+.tl-dot.vote-dot{background:var(--green);box-shadow:0 0 0 2px rgba(58,107,74,0.2);}
+.tl-dot.fixed-dot{background:var(--fixed-col);box-shadow:0 0 0 2px rgba(90,107,58,0.2);}
+.tl-dot.gold-dot{background:var(--gold);box-shadow:0 0 0 2px rgba(196,154,16,0.2);}
+.tl-connector{width:1px;flex:1;background:var(--border);margin-top:4px;}
+.tl-card{flex:1;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:10px;cursor:pointer;transition:box-shadow 0.15s;}
+.tl-card:active{box-shadow:none;}
+.tl-card.fixed-card{border-left:3px solid var(--fixed-col);}
+.tl-card-head{padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.tl-slot-label{font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px;}
+.tl-opt-name{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--ink);line-height:1.2;}
+.tl-meta{font-size:11px;color:var(--ink3);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;}
+.tl-thumb{width:50px;height:50px;border-radius:var(--radius-xs);overflow:hidden;flex-shrink:0;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.tl-thumb img{width:100%;height:100%;object-fit:cover;}
+.tl-expand{border-top:1px solid var(--border);padding:12px 16px;display:none;}
+.tl-expand.open{display:block;}
+.tl-notes{font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px;}
+.tl-links{display:flex;gap:6px;flex-wrap:wrap;}
+.share-strip{width:100%;min-height:50px;border-radius:var(--radius);background:none;border:1px solid var(--border2);color:var(--ink);font-family:var(--fh);font-size:15px;font-weight:600;font-style:italic;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.share-strip:active{background:var(--bg2);}
+.empty-itin{text-align:center;padding:48px 20px;color:var(--ink3);}
+.empty-itin-icon{font-size:36px;margin-bottom:12px;}
+.empty-itin-title{font-family:var(--fh);font-size:20px;font-weight:700;font-style:italic;color:var(--ink);margin-bottom:6px;}
+.empty-itin-sub{font-size:12px;line-height:1.7;}
+
+/* ── MODALS ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,22,15,0.5);z-index:300;align-items:flex-end;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-height:92vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom);}
+.modal-pull{padding:12px 0 0;display:flex;justify-content:center;}
+.modal-pull-bar{width:40px;height:4px;background:var(--border2);border-radius:2px;}
+.modal-body{padding:20px 20px 36px;}
+.modal-title{font-family:var(--fh);font-size:22px;font-weight:900;font-style:italic;margin-bottom:18px;color:var(--ink);letter-spacing:-0.3px;}
+.modal-footer{display:flex;gap:8px;margin-top:18px;}
+.modal-footer .btn-outline{flex:1;width:auto;}
+.modal-footer .btn-main{flex:2;width:auto;min-height:46px;}
+
+/* ── FORMS ── */
+.fg{margin-bottom:14px;}
+.fg label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;margin-bottom:5px;}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg);border:1px solid var(--border2);color:var(--ink);font-family:var(--fm);font-size:13px;padding:10px 13px;border-radius:var(--radius-sm);outline:none;transition:border-color 0.15s;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--green);background:var(--surface);}
+.fg textarea{min-height:68px;resize:vertical;}
+.fg .form-hint{font-size:10px;color:var(--ink3);margin-top:4px;line-height:1.5;}
+.fg-2{display:flex;gap:10px;}
+.fg-2 .fg{flex:1;}
+.fetch-row{display:flex;gap:8px;}
+.fetch-row input{flex:1;}
+.btn-fetch{padding:0 14px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--bg);color:var(--ink);font-family:var(--fm);font-size:11px;cursor:pointer;min-height:42px;white-space:nowrap;}
+.btn-fetch:active{background:var(--bg2);}
+.fetch-status{font-size:10px;color:var(--ink3);margin-top:4px;min-height:14px;}
+.field-err{font-size:11px;color:var(--red);margin-top:3px;}
+
+/* ── TYPE TOGGLE ── */
+.type-toggle{display:flex;border:1px solid var(--border2);border-radius:var(--radius-sm);overflow:hidden;}
+.type-btn{flex:1;padding:10px 8px;border:none;background:none;color:var(--ink3);font-family:var(--fm);font-size:11px;cursor:pointer;transition:background 0.15s,color 0.15s;text-align:center;}
+.type-btn.t-active-vote{background:var(--green);color:#fff;}
+.type-btn.t-active-fixed{background:var(--fixed-col);color:#fff;}
+
+/* ── VOTER LIST ── */
+.voter-list{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+.voter-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:border-color 0.15s,background 0.15s;}
+.voter-item.checked{border-color:rgba(58,107,74,0.35);background:var(--green-light);}
+.voter-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:transparent;transition:background 0.15s,border-color 0.15s;}
+.voter-item.checked .voter-check{background:var(--green);border-color:var(--green);color:#fff;}
+
+/* ── CONFIRM ── */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(28,22,15,0.65);z-index:400;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px);}
+.confirm-overlay.open{display:flex;}
+.confirm-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:22px;max-width:320px;width:100%;box-shadow:var(--shadow);}
+.confirm-title{font-family:var(--fh);font-size:18px;font-weight:700;font-style:italic;margin-bottom:8px;color:var(--ink);}
+.confirm-msg{font-size:12px;color:var(--ink2);margin-bottom:18px;line-height:1.6;}
+.confirm-btns{display:flex;gap:8px;}
+.confirm-btns button{flex:1;min-height:44px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:30px;font-family:var(--fm);font-size:12px;opacity:0;transition:opacity 0.2s,transform 0.2s;z-index:999;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{background:var(--green);}
+.toast.err{background:var(--red);}
+
+/* ── MISC ── */
+.loading-bar{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0%;transition:width 0.3s;z-index:999;}
+.config-warn{background:var(--gold-light);border:1px solid rgba(196,154,16,0.3);border-radius:var(--radius-sm);padding:11px 14px;font-size:11px;color:var(--gold);line-height:1.5;}
+.empty-slot{text-align:center;padding:20px 0;color:var(--ink3);font-size:12px;font-style:italic;}
+.not-voter-note{font-size:11px;color:var(--ink3);padding:10px 18px 14px;font-style:italic;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.slot-card{animation:fadeUp 0.3s ease both;}
+</style>
+</head>
+<body>
+
+<div class="loading-bar" id="loading-bar"></div>
+<div class="toast" id="toast"></div>
+
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title"></div>
+    <div class="confirm-msg" id="confirm-msg"></div>
+    <div class="confirm-btns">
+      <button class="btn-outline" onclick="confirmResolve(false)">Cancel</button>
+      <button class="btn-main red-btn" style="width:auto" onclick="confirmResolve(true)" id="confirm-ok-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TRIP -->
+<div class="modal-overlay" id="modal-trip" onclick="overlayClick(event,'modal-trip')">
+  <div class="modal-sheet"><div class="modal-pull"><div class="modal-pull-bar"></div></div>
+  <div class="modal-body">
+    <div class="modal-title" id="trip-modal-title">New trip</div>
+    <div class="fg"><label>Trip name</label><input type="text" id="tf-name" placeholder="e.g. Ube Glamping Weekend"></div>
+    <div class="fg-2">
+      <div class="fg"><label>Start</label><input type="date" id="tf-start"></div>
+      <div class="fg"><label>End</label><input type="date" id="tf-end"></div>
+    </div>
+    <div class="fg">
+      <label>Members (one per line) <span class="ib" tabindex="0">?<span class="ib-tip">Everyone on the trip — they pick their name from a list, no accounts needed.</span></span></label>
+      <textarea id="tf-members" placeholder="Phil&#10;Kenji&#10;Aoi&#10;Yuki"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('modal-trip')">Cancel</button>
+      <button class="btn-main green-btn" onclick="saveTrip()">Save trip</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- MODAL: SLOT -->
+<div class="modal-overlay" id="modal-slot" onclick="overlayClick(event,'modal-slot')">
+  <div class="modal-sheet"><div class="modal-pull"><div class="modal-pull-bar"></div></div>
+  <div class="modal-body">
+    <div class="modal-title" id="slot-modal-title">Add slot</div>
+    <div class="fg"><label>Title</label><input type="text" id="sf-title" placeholder="e.g. Saturday Night Stay"></div>
+    <div class="fg"><label>Date</label><input type="date" id="sf-date"></div>
+    <div class="fg"><label>Slot type</label>
+      <div class="type-toggle" style="margin-top:2px">
+        <button class="type-btn t-active-vote" id="type-vote-btn" onclick="setSlotType('vote')">🗳 Vote</button>
+        <button class="type-btn" id="type-fixed-btn" onclick="setSlotType('fixed')">✓ Already decided</button>
+      </div>
+    </div>
+    <div id="vote-fields">
+      <div class="fg">
+        <label>Who votes? <span class="ib" tabindex="0">?<span class="ib-tip">Only selected members need to vote. Results reveal once they all submit.</span></span></label>
+        <div class="voter-list" id="voter-checklist"></div>
+      </div>
+      <div class="fg">
+        <label>Criteria <span class="ib" tabindex="0">?<span class="ib-tip">Factors to score. Comma-separated. At least one required.</span></span></label>
+        <input type="text" id="sf-criteria" value="price,location,vibe">
+        <div class="form-hint">e.g. price, location, vibe, food, transport</div>
+        <div class="field-err" id="sf-criteria-err"></div>
+      </div>
+    </div>
+    <div id="fixed-fields" style="display:none">
+      <div style="background:var(--fixed-light);border:1px solid rgba(90,107,58,0.25);border-radius:var(--radius-sm);padding:11px 13px;font-size:12px;color:var(--fixed-col);line-height:1.6;">
+        Goes straight into the itinerary — no voting. You'll add the details next.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('modal-slot')">Cancel</button>
+      <button class="btn-main green-btn" id="slot-save-btn" onclick="saveSlot()">Save slot</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- MODAL: OPTION -->
+<div class="modal-overlay" id="modal-option" onclick="overlayClick(event,'modal-option')">
+  <div class="modal-sheet"><div class="modal-pull"><div class="modal-pull-bar"></div></div>
+  <div class="modal-body">
+    <div class="modal-title" id="opt-modal-title">Add option</div>
+    <div class="fg">
+      <label>Paste URL to auto-fill <span class="ib" tabindex="0">?<span class="ib-tip">Works with Airbnb, Jalan, restaurant sites. Google Maps URLs go in the Maps field below.</span></span></label>
+      <div class="fetch-row"><input type="url" id="of-url" placeholder="https://airbnb.com/..."><button class="btn-fetch" onclick="fetchPreview()">Fetch</button></div>
+      <div class="fetch-status" id="fetch-status"></div>
+    </div>
+    <div class="fg"><label>Name</label><input type="text" id="of-title" placeholder="Forest Glamping Ube"><div class="field-err" id="of-title-err"></div></div>
+    <div class="fg"><label>Photo URL</label><input type="url" id="of-img" placeholder="https://..."></div>
+    <div class="fg"><label>Price</label><input type="text" id="of-price" placeholder="¥12,000/night"></div>
+    <div class="fg">
+      <label>Google Maps URL <span class="ib" tabindex="0">?<span class="ib-tip">Maps → Search place → Share → copy link. Shows as a Maps button.</span></span></label>
+      <input type="url" id="of-maps" placeholder="https://maps.google.com/...">
+    </div>
+    <div class="fg"><label>Notes</label><textarea id="of-notes" placeholder="Outdoor bath, 30 min from station..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('modal-option')">Cancel</button>
+      <button class="btn-main green-btn" onclick="saveOption()">Save</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- MODAL: IDENTITY -->
+<div class="modal-overlay" id="modal-identity" onclick="overlayClick(event,'modal-identity')">
+  <div class="modal-sheet"><div class="modal-pull"><div class="modal-pull-bar"></div></div>
+  <div class="modal-body">
+    <div class="modal-title">Switch identity</div>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:16px;line-height:1.6">Tap your name. If it's missing, edit the trip to add it.</p>
+    <div class="member-grid" id="switch-grid"></div>
+    <button class="btn-outline danger" onclick="signOut()" style="width:100%;min-height:44px;font-size:12px;margin-top:14px">Sign out</button>
+  </div></div>
+</div>
+
+<!-- SHELL -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-word"><span class="logo-r">H</span>WM<span class="logo-g">B</span></span>
+      <div class="logo-dot"></div>
+    </div>
+    <div class="header-trip" id="header-trip">No trip loaded</div>
+  </div>
+</div>
+<div class="id-zone" id="id-zone"></div>
+<div class="tabs" id="tabs" style="display:none">
+  <button class="tab" id="tab-decisions" onclick="switchTab('decisions')">Decisions</button>
+  <button class="tab" id="tab-itinerary" onclick="switchTab('itinerary')">Itinerary</button>
+</div>
+<div class="main" id="main"></div>
+
+<script>
+const SB_URL='YOUR_SUPABASE_URL',SB_KEY='YOUR_SUPABASE_ANON_KEY';
+const DEMO=SB_URL==='YOUR_SUPABASE_URL';
+const AVATAR_PALETTE=['red','gold','green','fixed'];
+
+const sbApi=(path,opts={})=>{
+  if(DEMO)return Promise.resolve([]);
+  return fetch(`${SB_URL}/rest/v1/${path}`,{
+    headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json',Prefer:'return=representation',...(opts.headers||{})},
+    ...opts
+  }).then(r=>r.json()).catch(()=>[]);
+};
+
+let me=localStorage.getItem('hwmb_me')||'';
+let currentTab='decisions';
+let editingSlotId=null,editingOptId=null,activeSlotId=null;
+let currentSlotType='vote';
+let scores={},touchedOpts={};
+let confirmCb=null;
+let expandedTl={};
+const S={trip:null,slots:[],options:{},votes:{}};
+
+// ── DEMO ──
+const DD={
+  trip:{id:'dt1',title:'Ube Glamping Weekend',start_date:'2026-05-16',end_date:'2026-05-18',member_names:['phil','kenji','aoi','yuki'],created_by:'phil'},
+  slots:[
+    {id:'ds1',title:"Phil & Kenji's Stay",date:'2026-05-17',slot_order:0,criteria:['price','location','vibe'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:['phil','kenji']},
+    {id:'ds2',title:"Girls' Night Stay",date:'2026-05-17',slot_order:1,criteria:[],status:'decided',chosen_option_id:'do-g',created_by:'aoi',slot_type:'fixed',voters:['aoi','yuki']},
+    {id:'ds3',title:'Sunday Lunch',date:'2026-05-18',slot_order:2,criteria:['price','vibe'],status:'deciding',chosen_option_id:null,created_by:'kenji',slot_type:'vote',voters:[]},
+  ],
+  options:{
+    ds1:[
+      {id:'do1',slot_id:'ds1',title:'Forest Glamping',price_label:'¥14,000/night',image_url:'',url:'',maps_url:'',notes:'Private outdoor bath, BBQ included',option_order:0,created_by:'phil'},
+      {id:'do2',slot_id:'ds1',title:'Riverside Tent Camp',price_label:'¥8,000/night',image_url:'',url:'',maps_url:'',notes:'Budget option, shared facilities but great vibes',option_order:1,created_by:'kenji'},
+    ],
+    ds2:[{id:'do-g',slot_id:'ds2',title:'Auberge du Soleil',price_label:'¥28,000/night',image_url:'',url:'',maps_url:'',notes:'Boutique hotel, breakfast included. Already booked!',option_order:0,created_by:'aoi'}],
+    ds3:[{id:'do3',slot_id:'ds3',title:'Kawara Soba Takase',price_label:'~¥1,800/person',image_url:'',url:'',maps_url:'',notes:'Famous local specialty, river view seating',option_order:0,created_by:'kenji'}],
+  },
+  votes:{ds1:[],ds2:[],ds3:[]}
+};
+
+function avatarColor(name,idx){
+  if(!name)return AVATAR_PALETTE[0];
+  const i=Math.abs([...name].reduce((a,c)=>a+c.charCodeAt(0),0))%AVATAR_PALETTE.length;
+  return AVATAR_PALETTE[i];
+}
+
+async function load(){
+  loading(true);
+  if(DEMO){S.trip=DD.trip;S.slots=DD.slots;S.options=JSON.parse(JSON.stringify(DD.options));S.votes=JSON.parse(JSON.stringify(DD.votes));}
+  else{
+    try{
+      const trips=await sbApi('trips?select=*&order=created_at.desc&limit=1');
+      if(trips&&trips.length){
+        S.trip=trips[0];
+        S.slots=await sbApi(`slots?trip_id=eq.${S.trip.id}&select=*&order=slot_order,date`)||[];
+        for(const s of S.slots){
+          S.options[s.id]=await sbApi(`options?slot_id=eq.${s.id}&select=*&order=option_order`)||[];
+          S.votes[s.id]=await sbApi(`votes?slot_id=eq.${s.id}&select=*`)||[];
+        }
+      }
+    }catch{toast('Connection error','err');}
+  }
+  loading(false);renderAll();
+}
+
+function renderAll(){renderIdZone();renderTabs();renderMain();}
+
+function av(name,size='md'){
+  const col=avatarColor(name);
+  const sz=size==='sm'?'18px;font-size:8px':'28px;font-size:12px';
+  return `<div class="avatar ${col}" style="width:${sz};height:${sz.split(';')[0]}">${name?name[0].toUpperCase():' '}</div>`;
+}
+
+function renderIdZone(){
+  const members=S.trip?.member_names||[];
+  const el=document.getElementById('id-zone');
+  if(!members.length){el.innerHTML='';return;}
+  if(!me||!members.includes(me)){
+    el.innerHTML=`<div class="who-picker">
+      <div class="who-title">Who are you?</div>
+      <div class="who-sub">Tap your name to sign in and vote.</div>
+      <div class="member-grid">${members.map(m=>`<button class="member-btn" onclick="setMe('${m}')">${av(m)} ${cap(m)}</button>`).join('')}</div>
+    </div>`;
+  } else {
+    el.innerHTML=`<div class="id-bar">
+      <div class="id-bar-left">${av(me)}<div><div class="id-name">${cap(me)}</div><div class="id-role">Signed in</div></div></div>
+      <button class="btn-switch" onclick="openModal('modal-identity')">Switch</button>
+    </div>`;
+  }
+  const sg=document.getElementById('switch-grid');
+  if(sg)sg.innerHTML=members.map(m=>`<button class="member-btn" onclick="setMe('${m}')">${av(m)} ${cap(m)}${m===me?' ✓':''}</button>`).join('');
+}
+
+function renderTabs(){
+  const t=document.getElementById('tabs');
+  if(!S.trip){t.style.display='none';return;}
+  t.style.display='flex';
+  const dTab=document.getElementById('tab-decisions');
+  const iTab=document.getElementById('tab-itinerary');
+  dTab.className='tab'+(currentTab==='decisions'?' active-r':'');
+  iTab.className='tab'+(currentTab==='itinerary'?' active-g':'');
+}
+
+function switchTab(tab){currentTab=tab;renderTabs();renderMain();}
+
+function renderMain(){
+  const el=document.getElementById('main');
+  document.getElementById('header-trip').textContent=S.trip?S.trip.title:'No trip loaded';
+  if(!S.trip){
+    el.innerHTML=`${DEMO?`<div class="config-warn">Demo mode — replace SUPABASE_URL + SUPABASE_KEY in the script to go live.</div>`:''}
+    <div class="empty-itin"><div class="empty-itin-icon">🌿</div><div class="empty-itin-title">No trip yet</div><div class="empty-itin-sub">Create your first trip to get started.</div>
+    <button class="btn-main green-btn" style="width:auto;padding:0 28px;margin:16px auto 0" onclick="openTripModal()">Create trip</button></div>`;
+    return;
+  }
+  currentTab==='itinerary'?renderItinerary(el):renderDecisions(el);
+}
+
+// ── DECISIONS ──
+function renderDecisions(el){
+  const trip=S.trip,members=trip.member_names||[];
+  const vSlots=S.slots.filter(s=>s.slot_type!=='fixed');
+  const fSlots=S.slots.filter(s=>s.slot_type==='fixed');
+  el.innerHTML=`
+    ${DEMO?`<div class="config-warn">Demo mode — replace SUPABASE_URL + SUPABASE_KEY to go live.</div>`:''}
+    <div class="trip-card">
+      <div class="trip-eyebrow">Weekend Plan</div>
+      <div class="trip-name">${trip.title}</div>
+      <div class="trip-dates">${fmtRange(trip.start_date,trip.end_date)} &nbsp;·&nbsp; Organised by ${cap(trip.created_by||'?')}</div>
+      <div class="member-row">${members.map(m=>`<span class="m-chip${m===me?' you':''}"><span class="av-sm ${avatarColor(m)}" style="background:var(--${avatarColor(m)}-light);color:var(--${avatarColor(m)})">${m[0].toUpperCase()}</span>${cap(m)}${m===me?' (you)':''}</span>`).join('')}</div>
+    </div>
+    <div class="sec-row"><span class="sec-label">Open decisions</span>
+      <div class="btn-group">
+        <button class="btn-add" onclick="openTripModal(true)">Edit trip</button>
+        <button class="btn-add" onclick="openSlotModal()">+ Add slot</button>
+      </div>
+    </div>
+    ${vSlots.length?vSlots.map(s=>renderVoteSlot(s,members)).join(''):`<div class="empty-slot">No decision slots yet — tap "+ Add slot"</div>`}
+    ${fSlots.length?`<div class="sec-row" style="margin-top:6px"><span class="sec-label">Already decided</span></div>${fSlots.map(s=>renderFixedSlot(s,members)).join('')}`:''}`;
+}
+
+function renderVoteSlot(slot,members){
+  const opts=S.options[slot.id]||[];
+  const votes=S.votes[slot.id]||[];
+  const criteria=slot.criteria||[];
+  const voters=slot.voters&&slot.voters.length?slot.voters:members;
+  const voted=[...new Set(votes.map(v=>v.voter_name))];
+  const myVote=votes.find(v=>v.voter_name===me);
+  const allVoted=voters.length>0&&voted.length>=voters.length;
+  const iAmVoter=voters.includes(me);
+  const isCreator=slot.created_by===me||S.trip?.created_by===me;
+  const isSubset=slot.voters&&slot.voters.length>0&&slot.voters.length<members.length;
+
+  let sc='deciding',sl='deciding';
+  if(allVoted&&slot.status!=='decided'){sc='voted';sl='all voted';}
+  if(slot.status==='decided'){sc='decided';sl='decided';}
+
+  const optCards=opts.map(opt=>renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter)).join('');
+
+  let results='';
+  if(allVoted&&opts.length){
+    const ranked=rankOpts(opts,votes,criteria);
+    results=`<div class="results-wrap">
+      <div class="results-eyebrow">Results — all votes in</div>
+      ${ranked.map((r,i)=>`<div class="result-row">
+        <span class="result-name">${r.opt.title}</span>
+        <div class="result-track"><div class="result-fill ${i===0?'top':'rest'}" style="width:${Math.min(r.avg/5,1)*100}%"></div></div>
+        <span class="result-score">${r.avg.toFixed(1)}</span>
+        ${i===0?`<span class="result-crown">👑</span>`:''}
+      </div>`).join('')}
+      <div class="voters-txt">Voted: ${voted.map(cap).join(', ')}</div>
+    </div>`;
+  } else if(slot.status!=='decided'){
+    results=`<div class="results-wrap">
+      <div class="waiting-txt">Results reveal once all ${voters.length} voter${voters.length!==1?'s':''} submit.
+        <span class="ib" tabindex="0">?<span class="ib-tip">Only ${voters.map(cap).join(' & ')} vote on this slot.</span></span>
+      </div>
+      <div class="prog-row">
+        <div class="prog-track"><div class="prog-fill" style="width:${voters.length?Math.round(voted.length/voters.length*100):0}%"></div></div>
+        <span class="prog-label">${voted.length}/${voters.length}</span>
+      </div>
+      ${voted.length?`<div class="voters-txt">In: ${voted.map(cap).join(', ')}</div>`:''}
+    </div>`;
+  }
+
+  let footer='';
+  if(slot.status==='decided'){
+    const chosen=opts.find(o=>o.id===slot.chosen_option_id);
+    footer=`<div class="confirm-banner"><div class="confirm-banner-name">✓ ${chosen?chosen.title:'Decided'}</div><div class="confirm-banner-sub">Locked · view in Itinerary</div></div>`;
+    if(isCreator)footer+=`<button class="btn-outline" style="font-size:11px;min-height:36px;margin-top:2px" onclick="unlockSlot('${slot.id}')">Reopen</button>`;
+  } else if(!me){
+    footer=`<div class="vote-hint">Select your name above to vote.</div>`;
+  } else if(!iAmVoter){
+    footer=`<div class="vote-hint">${voters.map(cap).join(' & ')} decide this one.</div>`;
+  } else if(myVote){
+    footer=`<div class="voted-ok">✓ Your vote is in</div>`;
+    if(isCreator&&allVoted&&opts.length){
+      const top=rankOpts(opts,votes,criteria)[0];
+      footer+=`<button class="btn-main green-btn" style="margin-top:8px" onclick="confirmDecision('${slot.id}','${top?.opt.id}')">Confirm: ${top?.opt.title||'winner'}</button>`;
+    }
+  } else if(opts.length){
+    const allTouched=opts.every(o=>touchedOpts[`${slot.id}-${o.id}`]);
+    footer=`<button class="btn-main gold-btn" ${allTouched?'':'disabled'} id="vote-btn-${slot.id}" onclick="submitVote('${slot.id}')">Submit my votes</button>
+      ${!allTouched?`<div class="vote-hint">Rate every option above to unlock <span class="ib" tabindex="0">?<span class="ib-tip">Tap at least one star on each option first.</span></span></div>`:''}`;
+  } else {
+    footer=`<div class="vote-hint">Add options to begin.</div>`;
+  }
+
+  const subsetNote=isSubset?`<span style="color:var(--ink3);margin-left:6px">· voters: ${voters.map(cap).join(', ')}</span>`:'';
+  const editDel=isCreator?`<button class="btn-micro" onclick="openSlotModal('${slot.id}');event.stopPropagation()">Edit</button><button class="btn-micro danger" onclick="deleteSlot('${slot.id}');event.stopPropagation()">Delete</button>`:'';
+
+  return `<div class="slot-card" id="slot-${slot.id}">
+    <div class="slot-head" onclick="toggleSlot('${slot.id}')">
+      <div class="slot-color-bar ${sc}"></div>
+      <div class="slot-main">
+        <div class="slot-eyebrow">${slot.date?fmtDate(slot.date):'Date TBD'}${subsetNote}</div>
+        <div class="slot-title">${slot.title}</div>
+        <div class="slot-meta">${criteria.join(' · ')||'No criteria set'}</div>
+      </div>
+      <div class="slot-right">${editDel}<span class="badge ${sc}">${sl}</span><span class="chevron" id="chev-${slot.id}">▾</span></div>
+    </div>
+    <div class="slot-body" id="body-${slot.id}">
+      <div class="options-wrap">${optCards||`<div class="empty-slot">No options yet.</div>`}</div>
+      <div style="padding:0 18px 8px"><button class="btn-outline" onclick="openOptModal('${slot.id}')">+ Add option</button></div>
+      <div class="slot-foot">${footer}</div>
+      ${results}
+    </div>
+  </div>`;
+}
+
+function renderFixedSlot(slot,members){
+  const opts=S.options[slot.id]||[];
+  const opt=opts[0];
+  const isCreator=slot.created_by===me||S.trip?.created_by===me;
+  const editDel=isCreator?`<button class="btn-micro" onclick="openSlotModal('${slot.id}');event.stopPropagation()">Edit</button><button class="btn-micro danger" onclick="deleteSlot('${slot.id}');event.stopPropagation()">Delete</button>`:'';
+
+  return `<div class="slot-card fixed-type" id="slot-${slot.id}">
+    <div class="slot-head" onclick="toggleSlot('${slot.id}')">
+      <div class="slot-color-bar fixed"></div>
+      <div class="slot-main">
+        <div class="slot-eyebrow">${slot.date?fmtDate(slot.date):'Date TBD'} · by ${cap(slot.created_by||'?')}</div>
+        <div class="slot-title">${slot.title}</div>
+        <div class="slot-meta">${opt?opt.title:'No details added yet'}</div>
+      </div>
+      <div class="slot-right">${editDel}<span class="badge fixed">fixed</span><span class="chevron" id="chev-${slot.id}">▾</span></div>
+    </div>
+    <div class="slot-body" id="body-${slot.id}">
+      ${opt?`<div class="fixed-summary">
+        <div class="fixed-thumb">${opt.image_url?`<img src="${opt.image_url}" onerror="this.parentElement.textContent='📍'" loading="lazy">`:'📍'}</div>
+        <div class="fixed-info">
+          <div class="fixed-opt-name">${opt.title}</div>
+          <div class="fixed-opt-meta">${opt.price_label?opt.price_label+' · ':''}by ${cap(opt.created_by||'?')}</div>
+          ${opt.notes?`<div style="font-size:11px;color:var(--ink2);line-height:1.6;margin-bottom:8px">${opt.notes}</div>`:''}
+          <div class="link-row">
+            ${opt.url?`<a class="pill-link" href="${opt.url}" target="_blank">↗ Website</a>`:''}
+            ${opt.maps_url?`<a class="pill-link" href="${opt.maps_url}" target="_blank">📍 Maps</a>`:''}
+          </div>
+        </div>
+      </div>
+      ${isCreator?`<div style="padding:0 18px 14px;display:flex;gap:6px">
+        <button class="btn-micro" onclick="openOptModal('${slot.id}','${opt.id}')">Edit details</button>
+        <button class="btn-micro danger" onclick="deleteOpt('${slot.id}','${opt.id}')">Remove</button>
+      </div>`:''}`
+      :`<div style="padding:14px 18px"><button class="btn-outline" onclick="openOptModal('${slot.id}')">+ Add details</button></div>`}
+    </div>
+  </div>`;
+}
+
+function renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter){
+  const isWinner=allVoted&&rankOpts(S.options[slot.id]||[],S.votes[slot.id]||[],criteria)[0]?.opt.id===opt.id;
+  const isChosen=slot.chosen_option_id===opt.id;
+  const canEdit=opt.created_by===me||S.trip?.created_by===me;
+
+  let voteUI='';
+  if(!myVote&&me&&iAmVoter&&slot.status!=='decided'){
+    voteUI=`<div class="vote-block"><div class="vote-section-label">Your score</div>
+      ${criteria.map(c=>`<div class="crit-row">
+        <span class="crit-label">${c}</span>
+        <div class="stars" id="stars-${opt.id}-${c}">
+          ${[1,2,3,4,5].map(n=>`<span class="star" data-opt="${opt.id}" data-c="${c}" data-v="${n}"
+            onclick="setStar('${opt.id}','${c}',${n},'${slot.id}')"
+            ontouchstart="touchStar(event,'${opt.id}','${c}',${n},'${slot.id}')"
+            onmouseover="hoverStar('${opt.id}','${c}',${n})"
+            onmouseout="unhoverStar('${opt.id}','${c}','${slot.id}')">★</span>`).join('')}
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  const editDel=canEdit&&slot.status!=='decided'?`<div class="opt-edit-row">
+    <button class="btn-micro" onclick="openOptModal('${slot.id}','${opt.id}')">Edit</button>
+    <button class="btn-micro danger" onclick="deleteOpt('${slot.id}','${opt.id}')">Delete</button>
+  </div>`:'';
+
+  return `<div class="opt-card${isWinner&&allVoted?' winner-card':''}">
+    <div class="opt-img">${opt.image_url?`<img src="${opt.image_url}" alt="${opt.title}" onerror="this.parentElement.textContent='🏕️'" loading="lazy">`:'🏕️'}</div>
+    <div class="opt-body">
+      <div class="opt-name">${opt.title}${isChosen?` <span class="chosen-tag">✓ chosen</span>`:''}</div>
+      <div class="opt-byline">Added by ${cap(opt.created_by||'?')}</div>
+      ${opt.price_label?`<div class="opt-price">${opt.price_label}</div>`:''}
+      <div class="opt-cta-row">
+        ${opt.url?`<a class="pill-link" href="${opt.url}" target="_blank">↗ Website</a>`:''}
+        ${opt.maps_url?`<a class="pill-link" href="${opt.maps_url}" target="_blank">📍 Maps</a>`:''}
+      </div>
+      ${opt.notes?`<div class="opt-notes">${opt.notes}</div>`:''}
+      ${voteUI}${editDel}
+    </div>
+  </div>`;
+}
+
+// ── ITINERARY ──
+function renderItinerary(el){
+  const all=S.slots.filter(s=>s.status==='decided'||s.slot_type==='fixed');
+  if(!all.length){
+    el.innerHTML=`<div class="empty-itin"><div class="empty-itin-icon">🗺️</div><div class="empty-itin-title">Nothing here yet</div><div class="empty-itin-sub">Confirmed decisions and fixed plans appear here, grouped by day.</div></div>`;
+    return;
+  }
+  const byDate={};
+  for(const s of all){const k=s.date||'TBD';(byDate[k]=byDate[k]||[]).push(s);}
+  const dates=Object.keys(byDate).sort((a,b)=>a>b?1:-1);
+  let html='<div class="timeline">';
+  for(const date of dates){
+    const daySlots=byDate[date];
+    html+=`<div class="day-group">
+      <div class="day-header">
+        <div><div class="day-name">${date==='TBD'?'TBD':fmtDayLabel(date)}</div><div class="day-date-label">${date==='TBD'?'No date set':fmtDate(date)}</div></div>
+        <div class="day-rule"></div>
+      </div>
+      <div class="tl-items">${daySlots.map((s,i)=>renderTlItem(s,i===daySlots.length-1)).join('')}</div>
+    </div>`;
+  }
+  html+='</div><button class="share-strip" onclick="shareItinerary()">Share itinerary ↗</button>';
+  el.innerHTML=html;
+}
+
+function renderTlItem(slot,isLast){
+  const opt=(S.options[slot.id]||[]).find(o=>o.id===slot.chosen_option_id)||(S.options[slot.id]||[])[0];
+  if(!opt)return'';
+  const isFixed=slot.slot_type==='fixed';
+  const key=`tl-${slot.id}`;
+  const exp=expandedTl[key];
+  const dotClass=isFixed?'fixed-dot':'vote-dot';
+
+  return `<div class="tl-row">
+    <div class="tl-spine">
+      <div class="tl-dot ${dotClass}"></div>
+      ${!isLast?`<div class="tl-connector"></div>`:''}
+    </div>
+    <div class="tl-card${isFixed?' fixed-card':''}" onclick="toggleTl('${key}')">
+      <div class="tl-card-head">
+        <div style="flex:1;min-width:0">
+          <div class="tl-slot-label">${slot.title}${isFixed?' · fixed':''}</div>
+          <div class="tl-opt-name">${opt.title}</div>
+          <div class="tl-meta">
+            ${opt.price_label?`<span>${opt.price_label}</span>`:''}
+            ${opt.created_by?`<span>by ${cap(opt.created_by)}</span>`:''}
+          </div>
+        </div>
+        <div class="tl-thumb">${opt.image_url?`<img src="${opt.image_url}" onerror="this.parentElement.textContent='🏕️'" loading="lazy">`:(isFixed?'📍':'🏕️')}</div>
+      </div>
+      <div class="tl-expand${exp?' open':''}" id="${key}">
+        ${opt.notes?`<div class="tl-notes">${opt.notes}</div>`:''}
+        <div class="tl-links">
+          ${opt.url?`<a class="pill-link" href="${opt.url}" target="_blank" onclick="event.stopPropagation()">↗ Website</a>`:''}
+          ${opt.maps_url?`<a class="pill-link" href="${opt.maps_url}" target="_blank" onclick="event.stopPropagation()">📍 Maps</a>`:''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleTl(key){
+  expandedTl[key]=!expandedTl[key];
+  const b=document.getElementById(key);
+  if(b)b.classList.toggle('open',expandedTl[key]);
+}
+
+function shareItinerary(){
+  const all=S.slots.filter(s=>s.status==='decided'||s.slot_type==='fixed');
+  const sorted=[...all].sort((a,b)=>(a.date||'')>(b.date||'')?1:-1);
+  let text=`🌿 ${S.trip?.title||'Our Weekend'}\n\n`;
+  let lastDate='';
+  for(const slot of sorted){
+    const opt=(S.options[slot.id]||[]).find(o=>o.id===slot.chosen_option_id)||(S.options[slot.id]||[])[0];
+    if(!opt)continue;
+    const d=slot.date?fmtDate(slot.date):'TBD';
+    if(d!==lastDate){text+=`📅 ${d}\n`;lastDate=d;}
+    text+=`  ${slot.title}: ${opt.title}`;
+    if(opt.price_label)text+=` (${opt.price_label})`;
+    text+='\n';
+    if(opt.maps_url)text+=`  📍 ${opt.maps_url}\n`;
+  }
+  if(navigator.share)navigator.share({title:S.trip?.title,text}).catch(()=>{});
+  else navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard!','ok')).catch(()=>toast('Copy failed','err'));
+}
+
+// ── SLOT TYPE ──
+function setSlotType(type){
+  currentSlotType=type;
+  document.getElementById('type-vote-btn').className='type-btn'+(type==='vote'?' t-active-vote':'');
+  document.getElementById('type-fixed-btn').className='type-btn'+(type==='fixed'?' t-active-fixed':'');
+  document.getElementById('vote-fields').style.display=type==='vote'?'block':'none';
+  document.getElementById('fixed-fields').style.display=type==='fixed'?'block':'none';
+}
+
+function buildVoterChecklist(selected){
+  const members=S.trip?.member_names||[];
+  const checked=selected&&selected.length?selected:[...members];
+  return members.map(m=>`<div class="voter-item${checked.includes(m)?' checked':''}" id="vi-${m}" onclick="toggleVoter('${m}')">
+    <div class="voter-check">${checked.includes(m)?'✓':''}</div>
+    ${av(m,'sm')} <span style="font-size:12px">${cap(m)}</span>
+  </div>`).join('');
+}
+
+function toggleVoter(name){
+  const item=document.getElementById('vi-'+name);
+  const check=item?.querySelector('.voter-check');
+  if(!item||!check)return;
+  const on=item.classList.toggle('checked');
+  check.textContent=on?'✓':'';
+}
+
+function getSelectedVoters(){
+  return(S.trip?.member_names||[]).filter(m=>document.getElementById('vi-'+m)?.classList.contains('checked'));
+}
+
+// ── MUTATIONS ──
+async function saveTrip(){
+  const title=document.getElementById('tf-name').value.trim();
+  if(!title)return toast('Add a trip name','err');
+  const members=document.getElementById('tf-members').value.split('\n').map(s=>s.trim().toLowerCase()).filter(Boolean);
+  const data={title,start_date:document.getElementById('tf-start').value||null,end_date:document.getElementById('tf-end').value||null,member_names:members,created_by:editingSlotId?S.trip?.created_by:me||members[0]||'unknown'};
+  loading(true);
+  if(editingSlotId){
+    if(DEMO)Object.assign(S.trip,data);
+    else{const r=await sbApi(`trips?id=eq.${S.trip.id}`,{method:'PATCH',body:JSON.stringify(data)});if(r&&r[0])S.trip=r[0];}
+    toast('Trip updated','ok');
+  } else {
+    if(DEMO){S.trip={id:'t'+Date.now(),...data};S.slots=[];S.options={};S.votes={};}
+    else{const r=await sbApi('trips',{method:'POST',body:JSON.stringify(data)});if(r&&r[0]){S.trip=r[0];S.slots=[];S.options={};S.votes={};}}
+    toast('Trip created!','ok');
+  }
+  if(me&&members.length&&!members.includes(me)){me='';localStorage.removeItem('hwmb_me');}
+  closeModal('modal-trip');editingSlotId=null;loading(false);renderAll();
+}
+
+async function saveSlot(){
+  const title=document.getElementById('sf-title').value.trim();
+  if(!title)return toast('Add a title','err');
+  const isFixed=currentSlotType==='fixed';
+  let criteria=[],voters=[];
+  if(!isFixed){
+    criteria=document.getElementById('sf-criteria').value.split(',').map(s=>s.trim()).filter(Boolean);
+    if(!criteria.length){document.getElementById('sf-criteria-err').textContent='At least one criterion required';return;}
+    document.getElementById('sf-criteria-err').textContent='';
+    voters=getSelectedVoters();
+  }
+  const existing=editingSlotId?S.slots.find(s=>s.id===editingSlotId):null;
+  const data={trip_id:S.trip.id,title,date:document.getElementById('sf-date').value||null,criteria,voters,slot_type:isFixed?'fixed':'vote',slot_order:existing?existing.slot_order:S.slots.length,status:isFixed?'decided':existing?.status||'deciding',chosen_option_id:existing?.chosen_option_id||null,created_by:existing?.created_by||me};
+  loading(true);
+  let slotId=editingSlotId;
+  if(editingSlotId){
+    if(DEMO){const i=S.slots.findIndex(s=>s.id===editingSlotId);if(i>-1)S.slots[i]={...S.slots[i],...data};}
+    else{await sbApi(`slots?id=eq.${editingSlotId}`,{method:'PATCH',body:JSON.stringify(data)});S.slots=await sbApi(`slots?trip_id=eq.${S.trip.id}&select=*&order=slot_order,date`)||[];}
+    toast('Slot updated','ok');
+  } else {
+    if(DEMO){const s={id:'s'+Date.now(),...data};S.slots.push(s);S.options[s.id]=[];S.votes[s.id]=[];slotId=s.id;}
+    else{const r=await sbApi('slots',{method:'POST',body:JSON.stringify(data)});if(r&&r[0]){S.slots.push(r[0]);S.options[r[0].id]=[];S.votes[r[0].id]=[];slotId=r[0].id;}}
+    toast(isFixed?'Fixed plan added!':'Slot added!','ok');
+  }
+  closeModal('modal-slot');editingSlotId=null;loading(false);
+  if(isFixed&&slotId&&!existing?.chosen_option_id)setTimeout(()=>openOptModal(slotId),300);
+  renderAll();
+}
+
+async function saveOption(){
+  const title=document.getElementById('of-title').value.trim();
+  document.getElementById('of-title-err').textContent='';
+  if(!title){document.getElementById('of-title-err').textContent='Name is required';return;}
+  if(!activeSlotId)return;
+  const slot=S.slots.find(s=>s.id===activeSlotId);
+  const existingOpt=editingOptId?(S.options[activeSlotId]||[]).find(o=>o.id===editingOptId):null;
+  const data={slot_id:activeSlotId,title,url:document.getElementById('of-url').value.trim()||null,image_url:document.getElementById('of-img').value.trim()||null,price_label:document.getElementById('of-price').value.trim()||null,maps_url:document.getElementById('of-maps').value.trim()||null,notes:document.getElementById('of-notes').value.trim()||null,option_order:existingOpt?existingOpt.option_order:(S.options[activeSlotId]||[]).length,created_by:existingOpt?.created_by||me};
+  loading(true);
+  let newOptId=editingOptId;
+  if(editingOptId){
+    if(DEMO){const i=(S.options[activeSlotId]||[]).findIndex(o=>o.id===editingOptId);if(i>-1)S.options[activeSlotId][i]={...S.options[activeSlotId][i],...data};}
+    else{await sbApi(`options?id=eq.${editingOptId}`,{method:'PATCH',body:JSON.stringify(data)});S.options[activeSlotId]=await sbApi(`options?slot_id=eq.${activeSlotId}&select=*&order=option_order`)||[];}
+    toast('Updated','ok');
+  } else {
+    if(DEMO){const o={id:'o'+Date.now(),...data};(S.options[activeSlotId]=S.options[activeSlotId]||[]).push(o);newOptId=o.id;}
+    else{const r=await sbApi('options',{method:'POST',body:JSON.stringify(data)});if(r&&r[0]){(S.options[activeSlotId]=S.options[activeSlotId]||[]).push(r[0]);newOptId=r[0].id;}}
+    toast('Added!','ok');
+  }
+  if(slot?.slot_type==='fixed'&&newOptId){
+    if(DEMO){const si=S.slots.findIndex(s=>s.id===activeSlotId);if(si>-1){S.slots[si].chosen_option_id=newOptId;S.slots[si].status='decided';}}
+    else await sbApi(`slots?id=eq.${activeSlotId}`,{method:'PATCH',body:JSON.stringify({chosen_option_id:newOptId,status:'decided'})});
+  }
+  clearOptForm();closeModal('modal-option');editingOptId=null;loading(false);renderAll();
+}
+
+async function deleteSlot(slotId){
+  const ok=await confirm2('Delete this slot?','All options and votes removed. Cannot be undone.');
+  if(!ok)return;
+  if(DEMO){S.slots=S.slots.filter(s=>s.id!==slotId);delete S.options[slotId];delete S.votes[slotId];}
+  else{await sbApi(`slots?id=eq.${slotId}`,{method:'DELETE'});S.slots=S.slots.filter(s=>s.id!==slotId);delete S.options[slotId];delete S.votes[slotId];}
+  toast('Deleted','ok');renderAll();
+}
+
+async function deleteOpt(slotId,optId){
+  const ok=await confirm2('Delete this option?','Cannot be undone.');
+  if(!ok)return;
+  if(DEMO){S.options[slotId]=(S.options[slotId]||[]).filter(o=>o.id!==optId);}
+  else{await sbApi(`options?id=eq.${optId}`,{method:'DELETE'});S.options[slotId]=(S.options[slotId]||[]).filter(o=>o.id!==optId);}
+  toast('Deleted','ok');renderAll();
+}
+
+async function confirmDecision(slotId,optId){
+  const opt=(S.options[slotId]||[]).find(o=>o.id===optId);
+  const ok=await confirm2(`Confirm "${opt?.title}"?`,'Locks the slot. You can reopen it later.','Confirm','confirm-ok-btn');
+  if(!ok)return;
+  if(DEMO){const s=S.slots.find(sl=>sl.id===slotId);if(s){s.status='decided';s.chosen_option_id=optId;}}
+  else{await sbApi(`slots?id=eq.${slotId}`,{method:'PATCH',body:JSON.stringify({status:'decided',chosen_option_id:optId})});const i=S.slots.findIndex(s=>s.id===slotId);if(i>-1){S.slots[i].status='decided';S.slots[i].chosen_option_id=optId;}}
+  toast('Decision locked!','ok');renderAll();
+}
+
+async function unlockSlot(slotId){
+  const ok=await confirm2('Reopen this slot?','Votes are kept. Members can vote again.');
+  if(!ok)return;
+  if(DEMO){const s=S.slots.find(sl=>sl.id===slotId);if(s){s.status='deciding';s.chosen_option_id=null;}}
+  else{await sbApi(`slots?id=eq.${slotId}`,{method:'PATCH',body:JSON.stringify({status:'deciding',chosen_option_id:null})});const i=S.slots.findIndex(s=>s.id===slotId);if(i>-1){S.slots[i].status='deciding';S.slots[i].chosen_option_id=null;}}
+  toast('Slot reopened','ok');renderAll();
+}
+
+async function submitVote(slotId){
+  if(!me)return toast('Select your name first','err');
+  const slot=S.slots.find(s=>s.id===slotId);
+  const opts=S.options[slotId]||[],criteria=slot?.criteria||[];
+  const sc={};
+  for(const opt of opts){sc[opt.id]={};for(const c of criteria)sc[opt.id][c]=scores[`${slotId}-${opt.id}-${c}`]||3;}
+  const vd={slot_id:slotId,voter_name:me,scores:sc};
+  loading(true);
+  if(DEMO){S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);S.votes[slotId].push({id:'v'+Date.now(),...vd});}
+  else{await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=representation,resolution=merge-duplicates'}});S.votes[slotId]=await sbApi(`votes?slot_id=eq.${slotId}&select=*`)||[];}
+  scores={};touchedOpts={};loading(false);renderAll();toast('Vote in!','ok');
+}
+
+// ── STARS ──
+function setStar(optId,c,val,slotId){scores[`${slotId}-${optId}-${c}`]=val;touchedOpts[`${slotId}-${optId}`]=true;refreshStars(optId,c,val);checkVoteBtn(slotId);}
+function touchStar(e,optId,c,val,slotId){e.preventDefault();setStar(optId,c,val,slotId);}
+function refreshStars(optId,c,val){document.querySelectorAll(`.star[data-opt="${optId}"][data-c="${c}"]`).forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.v)<=val));}
+function hoverStar(optId,c,val){document.querySelectorAll(`.star[data-opt="${optId}"][data-c="${c}"]`).forEach(s=>s.style.color=parseInt(s.dataset.v)<=val?'var(--gold)':'var(--bg3)');}
+function unhoverStar(optId,c,slotId){const cur=scores[`${slotId}-${optId}-${c}`]||0;document.querySelectorAll(`.star[data-opt="${optId}"][data-c="${c}"]`).forEach(s=>s.style.color=parseInt(s.dataset.v)<=cur?'var(--gold)':'var(--bg3)');}
+function checkVoteBtn(slotId){const all=(S.options[slotId]||[]).every(o=>touchedOpts[`${slotId}-${o.id}`]);const btn=document.getElementById(`vote-btn-${slotId}`);if(btn)btn.disabled=!all;}
+
+// ── RANK ──
+function rankOpts(opts,votes,criteria){
+  return opts.map(opt=>{let sum=0,cnt=0;for(const v of votes){const s=v.scores?.[opt.id];if(s)for(const c of criteria){sum+=Number(s[c])||0;cnt++;}}return{opt,avg:cnt?sum/cnt:0};}).sort((a,b)=>b.avg-a.avg);
+}
+
+// ── IDENTITY ──
+function setMe(name){me=name.toLowerCase();localStorage.setItem('hwmb_me',me);closeModal('modal-identity');renderAll();toast(`Signed in as ${cap(name)}`,'ok');}
+function signOut(){me='';localStorage.removeItem('hwmb_me');closeModal('modal-identity');renderAll();toast('Signed out');}
+
+// ── MODAL OPENERS ──
+function openTripModal(editing=false){
+  editingSlotId=editing?'edit':null;
+  document.getElementById('trip-modal-title').textContent=editing?'Edit trip':'New trip';
+  if(editing&&S.trip){document.getElementById('tf-name').value=S.trip.title||'';document.getElementById('tf-start').value=S.trip.start_date||'';document.getElementById('tf-end').value=S.trip.end_date||'';document.getElementById('tf-members').value=(S.trip.member_names||[]).map(cap).join('\n');}
+  else['tf-name','tf-start','tf-end','tf-members'].forEach(id=>document.getElementById(id).value='');
+  openModal('modal-trip');
+}
+
+function openSlotModal(slotId=null){
+  editingSlotId=slotId;
+  document.getElementById('slot-modal-title').textContent=slotId?'Edit slot':'Add slot';
+  document.getElementById('sf-criteria-err').textContent='';
+  const existing=slotId?S.slots.find(s=>s.id===slotId):null;
+  const type=existing?.slot_type||'vote';
+  currentSlotType=type;
+  document.getElementById('sf-title').value=existing?.title||'';
+  document.getElementById('sf-date').value=existing?.date||'';
+  document.getElementById('sf-criteria').value=(existing?.criteria||['price','location','vibe']).join(',');
+  setSlotType(type);
+  document.getElementById('voter-checklist').innerHTML=buildVoterChecklist(existing?.voters||[]);
+  openModal('modal-slot');
+}
+
+function openOptModal(slotId,optId=null){
+  activeSlotId=slotId;editingOptId=optId;
+  const slot=S.slots.find(s=>s.id===slotId);
+  document.getElementById('opt-modal-title').textContent=optId?'Edit details':slot?.slot_type==='fixed'?'Add plan details':'Add option';
+  document.getElementById('of-title-err').textContent='';document.getElementById('fetch-status').textContent='';
+  if(optId){const o=(S.options[slotId]||[]).find(op=>op.id===optId);if(o){document.getElementById('of-url').value=o.url||'';document.getElementById('of-title').value=o.title||'';document.getElementById('of-img').value=o.image_url||'';document.getElementById('of-price').value=o.price_label||'';document.getElementById('of-maps').value=o.maps_url||'';document.getElementById('of-notes').value=o.notes||'';}}
+  else clearOptForm();
+  openModal('modal-option');
+}
+
+function clearOptForm(){['of-url','of-title','of-img','of-price','of-maps','of-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('fetch-status').textContent='';}
+
+async function fetchPreview(){
+  const url=document.getElementById('of-url').value.trim();
+  if(!url)return toast('Paste a URL first','err');
+  const st=document.getElementById('fetch-status');
+  if(/maps\.google|goo\.gl\/maps|maps\.app\.goo/i.test(url)){document.getElementById('of-maps').value=url;st.textContent='Maps URL moved to Maps field below ↓';return;}
+  st.textContent='Fetching...';
+  try{const r=await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}`);const d=await r.json();
+    if(d.data){if(d.data.title&&!document.getElementById('of-title').value)document.getElementById('of-title').value=d.data.title;if(d.data.image?.url&&!document.getElementById('of-img').value)document.getElementById('of-img').value=d.data.image.url;st.textContent='Done — review and edit below';}
+    else st.textContent='No preview found — fill in manually';
+  }catch{st.textContent='Fetch failed — fill in manually';}
+}
+
+// ── UI UTILS ──
+function toggleSlot(id){const body=document.getElementById('body-'+id),chev=document.getElementById('chev-'+id);if(!body||!chev)return;const open=body.classList.toggle('open');chev.classList.toggle('open',open);}
+function openModal(id){document.getElementById(id)?.classList.add('open');}
+function closeModal(id){document.getElementById(id)?.classList.remove('open');}
+function overlayClick(e,id){if(e.target===e.currentTarget)closeModal(id);}
+function confirm2(title,msg,okLabel='Delete'){
+  return new Promise(resolve=>{
+    document.getElementById('confirm-title').textContent=title;
+    document.getElementById('confirm-msg').textContent=msg;
+    document.getElementById('confirm-ok-btn').textContent=okLabel;
+    confirmCb=resolve;document.getElementById('confirm-overlay').classList.add('open');
+  });
+}
+function confirmResolve(val){document.getElementById('confirm-overlay').classList.remove('open');if(confirmCb){confirmCb(val);confirmCb=null;}}
+function toast(msg,type=''){const el=document.getElementById('toast');el.textContent=msg;el.className='toast'+(type?' '+type:'');el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>{el.classList.remove('show');el.className='toast';},2600);}
+function loading(on){const bar=document.getElementById('loading-bar');bar.style.width=on?'70%':'100%';if(!on)setTimeout(()=>{bar.style.width='0%';bar.style.transition='none';setTimeout(()=>bar.style.transition='width 0.3s',50);},300);}
+function cap(s){return s?s[0].toUpperCase()+s.slice(1):s;}
+function fmtDate(d){try{return new Date(d+'T00:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}catch{return d;}}
+function fmtDayLabel(d){try{return new Date(d+'T00:00:00').toLocaleDateString('en-US',{weekday:'long'});}catch{return d;}}
+function fmtRange(s,e){if(!s&&!e)return'Dates TBD';const f=d=>{try{return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});}catch{return d;}};return s&&e?`${f(s)} – ${f(e)}`:f(s||e);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){['modal-trip','modal-slot','modal-option','modal-identity'].forEach(closeModal);document.getElementById('confirm-overlay').classList.remove('open');if(confirmCb){confirmCb(false);confirmCb=null;}}});
+load();
+</script>
+</body>
+</html>
