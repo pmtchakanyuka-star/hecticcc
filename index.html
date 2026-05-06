@@ -570,12 +570,26 @@ const SB_URL='https://ytuzsepvuzgubreagqnp.supabase.co',SB_KEY='eyJhbGciOiJIUzI1
 const DEMO=SB_URL==='YOUR_SUPABASE_URL'||typeof window.__hwmbDemo!=='undefined';
 const AVATAR_PALETTE=['red','gold','green','fixed'];
 
-const sbApi=(path,opts={})=>{
-  if(DEMO)return Promise.resolve([]);
-  return fetch(`${SB_URL}/rest/v1/${path}`,{
+const sbApi=async(path,opts={})=>{
+  if(DEMO)return [];
+  const res=await fetch(`${SB_URL}/rest/v1/${path}`,{
     headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json',Prefer:'return=representation',...(opts.headers||{})},
     ...opts
-  }).then(r=>r.json()).catch(()=>[]);
+  });
+  // Surface errors visibly instead of silently returning []
+  if(!res.ok){
+    let errMsg='';
+    try{const e=await res.json();errMsg=e.message||e.hint||JSON.stringify(e);}catch{}
+    console.error(`Supabase error [${res.status}] ${path}:`,errMsg);
+    // Show user-visible error for write operations
+    if(opts.method&&opts.method!=='GET'){
+      toast(`DB error ${res.status}: ${errMsg.slice(0,80)}`,'err');
+    }
+    return [];
+  }
+  const ct=res.headers.get('content-type')||'';
+  if(ct.includes('json'))return res.json();
+  return [];
 };
 
 let me=localStorage.getItem('hwmb_me')||'';
@@ -1388,29 +1402,41 @@ async function submitVote(slotId){
   }
   const vd={slot_id:slotId,voter_name:me,scores:sc};
 
-  // ── OPTIMISTIC: update local state immediately, leaderboard shows now ──
+  // ── STEP 1: Show in UI immediately ──
   S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);
-  S.votes[slotId].push({id:'v_local_'+Date.now(),...vd});
+  S.votes[slotId].push({id:'v_'+Date.now(),...vd});
   scores={};touchedOpts={};delete pendingRanks[slotId];
   openSlots.add(slotId);
   renderAll();
   toast('Vote in!','ok');
 
-  // ── PERSIST: save to Supabase without touching local state on success ──
+  // ── STEP 2: Save to Supabase ──
   if(!DEMO){
-    try{
-      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${encodeURIComponent(me)}`,{method:'DELETE',headers:{Prefer:''}});
-      await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=minimal'}});
-      // Only refresh if we get a meaningful response — merge don't replace
-      const fresh=await sbApi(`votes?slot_id=eq.${slotId}&select=*`);
-      if(fresh&&Array.isArray(fresh)&&fresh.length>=S.votes[slotId].length){
-        S.votes[slotId]=fresh;
+    // Use upsert via on_conflict — single call, atomic, no race condition
+    const res=await fetch(`${SB_URL}/rest/v1/votes`,{
+      method:'POST',
+      headers:{
+        apikey:SB_KEY,
+        Authorization:`Bearer ${SB_KEY}`,
+        'Content-Type':'application/json',
+        'Prefer':'resolution=merge-duplicates,return=representation'
+      },
+      body:JSON.stringify(vd)
+    });
+    if(res.ok){
+      const saved=await res.json();
+      if(saved&&saved.length){
+        // Replace local vote with server-confirmed vote
+        S.votes[slotId]=S.votes[slotId].filter(v=>v.voter_name!==me);
+        S.votes[slotId].push(saved[0]);
         openSlots.add(slotId);
         renderAll();
+        console.log('Vote saved to Supabase:',saved[0].id);
       }
-    }catch(e){
-      console.error('Vote save error:',e);
-      toast('Saved locally — will sync on refresh','err');
+    } else {
+      const err=await res.json().catch(()=>({}));
+      console.error('Vote save failed:',res.status,err);
+      toast(`Vote not saved to DB: ${err.message||res.status}`,'err');
     }
   }
 }
@@ -1706,21 +1732,7 @@ function fmtRange(s,e){if(!s&&!e)return'Dates TBD';const f=d=>{try{return new Da
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){['modal-trip','modal-slot','modal-option','modal-identity'].forEach(closeModal);document.getElementById('confirm-overlay').classList.remove('open');if(confirmCb){confirmCb(false);confirmCb=null;}}});
 load();
 
-// ── AUTO-REFRESH votes for open slots every 15s ──
-setInterval(async()=>{
-  if(DEMO||currentScreen!=='trip'||!S.trip||!openSlots.size)return;
-  let changed=false;
-  for(const slotId of openSlots){
-    try{
-      const fresh=await sbApi(`votes?slot_id=eq.${slotId}&select=*`);
-      if(fresh&&Array.isArray(fresh)){
-        const oldCount=(S.votes[slotId]||[]).length;
-        if(fresh.length!==oldCount){S.votes[slotId]=fresh;changed=true;}
-      }
-    }catch(e){}
-  }
-  if(changed){renderAll();}
-},15000);
+// Auto-refresh removed — votes are managed via optimistic updates + manual refresh button
 </script>
 </body>
 </html>
