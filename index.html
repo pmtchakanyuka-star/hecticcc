@@ -352,6 +352,58 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .empty-slot{text-align:center;padding:20px 0;color:var(--ink3);font-size:12px;font-style:italic;}
 .not-voter-note{font-size:11px;color:var(--ink3);padding:10px 18px 14px;font-style:italic;}
 
+/* ── VOTE MODE SELECTOR ── */
+.vote-mode-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;}
+.vote-mode-btn{padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border2);background:var(--bg);cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s;}
+.vote-mode-btn:active{background:var(--bg2);}
+.vote-mode-btn.selected{border-color:var(--green);background:var(--green-light);}
+.vote-mode-btn .vm-icon{font-size:18px;margin-bottom:4px;}
+.vote-mode-btn .vm-label{font-size:10px;color:var(--ink2);line-height:1.4;font-family:var(--fm);}
+.vote-mode-btn.selected .vm-label{color:var(--green);}
+.mode-tag{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid;margin-left:6px;vertical-align:middle;}
+.mode-tag.ranking{border-color:rgba(196,154,16,0.4);color:var(--gold);background:var(--gold-light);}
+.mode-tag.criteria{border-color:rgba(58,107,74,0.3);color:var(--green);background:var(--green-light);}
+.mode-tag.both{border-color:rgba(184,74,47,0.3);color:var(--red);background:var(--red-light);}
+
+/* ── RANKING STEP ── */
+.rank-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:12px;}
+.rank-section-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.rank-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.rank-item:last-child{border-bottom:none;}
+.rank-num-btns{display:flex;gap:4px;flex-shrink:0;}
+.rank-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.1s;}
+.rank-btn.active-rank{background:var(--gold);border-color:var(--gold);color:#000;}
+.rank-btn:active{opacity:0.7;}
+.rank-item-name{font-family:var(--fh);font-size:13px;font-weight:600;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rank-pos-badge{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;font-weight:700;flex-shrink:0;}
+.rank-pos-badge.p1{background:var(--gold);color:#000;}
+.rank-pos-badge.p2{background:var(--bg3);color:var(--ink2);}
+.rank-pos-badge.p3{background:var(--bg3);color:var(--ink2);}
+.rank-pos-badge.unset{background:var(--border);color:var(--ink3);}
+
+/* ── LEADERBOARD ── */
+.leaderboard{margin:0 18px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
+.lb-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.lb-title{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);}
+.lb-live{font-size:10px;color:var(--green);display:flex;align-items:center;gap:4px;}
+.lb-live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-dot 1.5s ease infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);}
+.lb-row:last-child{border-bottom:none;}
+.lb-pos{font-family:var(--fh);font-size:14px;font-weight:900;width:20px;flex-shrink:0;color:var(--ink3);}
+.lb-pos.first{color:var(--gold);}
+.lb-name{font-family:var(--fh);font-size:14px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lb-bar-wrap{width:80px;flex-shrink:0;}
+.lb-bar-bg{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.lb-bar-fill{height:100%;border-radius:3px;transition:width 0.5s cubic-bezier(.34,1.56,.64,1);}
+.lb-bar-fill.top{background:var(--green);}
+.lb-bar-fill.rest{background:var(--gold);}
+.lb-score{font-size:11px;color:var(--ink3);width:32px;text-align:right;flex-shrink:0;}
+.lb-crown{font-size:13px;flex-shrink:0;}
+.lb-breakdown{font-size:10px;color:var(--ink3);padding:6px 14px 8px;display:flex;gap:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.lb-breakdown span{display:flex;align-items:center;gap:4px;}
+.no-votes-yet{padding:14px;font-size:12px;color:var(--ink3);font-style:italic;text-align:center;}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .slot-card{animation:fadeUp 0.3s ease both;}
 </style>
@@ -408,14 +460,32 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     </div>
     <div id="vote-fields">
       <div class="fg">
-        <label>Who votes? <span class="ib" tabindex="0">?<span class="ib-tip">Only selected members need to vote. Results reveal once they all submit.</span></span></label>
-        <div class="voter-list" id="voter-checklist"></div>
+        <label>Voting mode <span class="ib" tabindex="0">?<span class="ib-tip">Ranking = put options in order of preference. Criteria = score each option on factors like price and vibe. Both = rank first (70%), then score criteria (30%).</span></span></label>
+        <div class="vote-mode-grid">
+          <div class="vote-mode-btn" id="vm-ranking" onclick="setVoteMode('ranking')">
+            <div class="vm-icon">🏆</div>
+            <div class="vm-label">Ranking<br>only</div>
+          </div>
+          <div class="vote-mode-btn" id="vm-criteria" onclick="setVoteMode('criteria')">
+            <div class="vm-icon">⭐</div>
+            <div class="vm-label">Criteria<br>only</div>
+          </div>
+          <div class="vote-mode-btn" id="vm-both" onclick="setVoteMode('both')">
+            <div class="vm-icon">🏆⭐</div>
+            <div class="vm-label">Both<br>70 / 30</div>
+          </div>
+        </div>
+        <div class="field-err" id="sf-mode-err"></div>
       </div>
-      <div class="fg">
+      <div class="fg" id="criteria-field" style="display:none">
         <label>Criteria <span class="ib" tabindex="0">?<span class="ib-tip">Factors to score. Comma-separated. At least one required.</span></span></label>
         <input type="text" id="sf-criteria" value="price,location,vibe">
         <div class="form-hint">e.g. price, location, vibe, food, transport</div>
         <div class="field-err" id="sf-criteria-err"></div>
+      </div>
+      <div class="fg">
+        <label>Who votes? <span class="ib" tabindex="0">?<span class="ib-tip">Only selected members need to vote. Leaderboard updates live as votes come in.</span></span></label>
+        <div class="voter-list" id="voter-checklist"></div>
       </div>
     </div>
     <div id="fixed-fields" style="display:none">
@@ -497,7 +567,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 <script>
 const SB_URL='https://ytuzsepvuzgubreagqnp.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dXpzZXB2dXpndWJyZWFncW5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDY3MDIsImV4cCI6MjA5MzMyMjcwMn0.BCX-21KOuvB93VS6Q4nMPkP4B3iynDs7X8ly8XSYvJ8';
-const DEMO=SB_URL==='YOUR_SUPABASE_URL';
+const DEMO=SB_URL==='YOUR_SUPABASE_URL'||typeof window.__hwmbDemo!=='undefined';
 const AVATAR_PALETTE=['red','gold','green','fixed'];
 
 const sbApi=(path,opts={})=>{
@@ -513,7 +583,8 @@ let currentTab='decisions';
 let currentScreen='home'; // 'home' | 'trip'
 let editingSlotId=null,editingOptId=null,activeSlotId=null;
 let currentSlotType='vote';
-let scores={},touchedOpts={};
+let scores={},touchedOpts={},pendingRanks={};
+let currentVoteMode=null; // 'ranking'|'criteria'|'both' — set when creator picks
 let confirmCb=null;
 let expandedTl={};
 let allTrips=[];
@@ -528,15 +599,15 @@ const DD={
   ],
   slots:{
     dt1:[
-      {id:'ds1',trip_id:'dt1',title:"Phil & Kenji's Stay",date:'2026-05-17',slot_order:0,criteria:['price','location','vibe'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:['phil','kenji']},
-      {id:'ds2',trip_id:'dt1',title:"Girls' Night Stay",date:'2026-05-17',slot_order:1,criteria:[],status:'decided',chosen_option_id:'do-g',created_by:'aoi',slot_type:'fixed',voters:['aoi','yuki']},
-      {id:'ds3',trip_id:'dt1',title:'Sunday Lunch',date:'2026-05-18',slot_order:2,criteria:['price','vibe'],status:'deciding',chosen_option_id:null,created_by:'kenji',slot_type:'vote',voters:[]},
+      {id:'ds1',trip_id:'dt1',title:"Phil & Kenji's Stay",date:'2026-05-17',slot_order:0,criteria:['price','location','vibe'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:['phil','kenji'],vote_mode:'both'},
+      {id:'ds2',trip_id:'dt1',title:"Girls' Night Stay",date:'2026-05-17',slot_order:1,criteria:[],status:'decided',chosen_option_id:'do-g',created_by:'aoi',slot_type:'fixed',voters:['aoi','yuki'],vote_mode:'criteria'},
+      {id:'ds3',trip_id:'dt1',title:'Sunday Lunch',date:'2026-05-18',slot_order:2,criteria:['price','vibe'],status:'deciding',chosen_option_id:null,created_by:'kenji',slot_type:'vote',voters:[],vote_mode:'criteria'},
     ],
     dt2:[
-      {id:'ds4',trip_id:'dt2',title:'Saturday Dinner',date:'2026-03-08',slot_order:0,criteria:['price','vibe','food'],status:'decided',chosen_option_id:'do4',created_by:'kenji',slot_type:'vote',voters:[]},
+      {id:'ds4',trip_id:'dt2',title:'Saturday Dinner',date:'2026-03-08',slot_order:0,criteria:['price','vibe','food'],status:'decided',chosen_option_id:'do4',created_by:'kenji',slot_type:'vote',voters:[],vote_mode:'both'},
     ],
     dt3:[
-      {id:'ds5',trip_id:'dt3',title:'Lunch spot',date:'2026-01-20',slot_order:0,criteria:['price','location'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:[]},
+      {id:'ds5',trip_id:'dt3',title:'Lunch spot',date:'2026-01-20',slot_order:0,criteria:['price','location'],status:'deciding',chosen_option_id:null,created_by:'phil',slot_type:'vote',voters:[],vote_mode:'ranking'},
     ],
   },
   options:{
@@ -572,7 +643,9 @@ async function load(){
   } else {
     try{
       allTrips=await sbApi('trips?select=*&order=created_at.desc')||[];
-    }catch{toast('Connection error','err');}
+      // If Supabase returns empty (e.g. blocked by CORS in preview), fall back to demo
+      if(!allTrips.length){allTrips=DD.trips;S.options={};S.votes={};for(const sl of DD.slots.dt1||[]){S.options[sl.id]=DD.options[sl.id]||[];S.votes[sl.id]=JSON.parse(JSON.stringify(DD.votes[sl.id]||[]));}console.warn('HWMB: Using demo data (Supabase unreachable in this context)');}
+    }catch{toast('Connection error — showing demo','err');allTrips=DD.trips;}
   }
   loading(false);
   currentScreen='home';
@@ -799,6 +872,9 @@ function renderVoteSlot(slot,members){
   const opts=S.options[slot.id]||[];
   const votes=S.votes[slot.id]||[];
   const criteria=slot.criteria||[];
+  const voteMode=slot.vote_mode||'criteria';
+  const hasRanking=voteMode==='ranking'||voteMode==='both';
+  const hasCriteria=voteMode==='criteria'||voteMode==='both';
   const voters=slot.voters&&slot.voters.length?slot.voters:members;
   const voted=[...new Set(votes.map(v=>v.voter_name))];
   const myVote=votes.find(v=>v.voter_name===me);
@@ -808,37 +884,76 @@ function renderVoteSlot(slot,members){
   const isSubset=slot.voters&&slot.voters.length>0&&slot.voters.length<members.length;
 
   let sc='deciding',sl='deciding';
+  if(voted.length>0&&slot.status!=='decided'){sc='voted';sl=`${voted.length}/${voters.length} voted`;}
   if(allVoted&&slot.status!=='decided'){sc='voted';sl='all voted';}
   if(slot.status==='decided'){sc='decided';sl='decided';}
 
-  const optCards=opts.map(opt=>renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter)).join('');
-
-  let results='';
-  if(allVoted&&opts.length){
-    const ranked=rankOpts(opts,votes,criteria);
-    results=`<div class="results-wrap">
-      <div class="results-eyebrow">Results — all votes in</div>
-      ${ranked.map((r,i)=>`<div class="result-row">
-        <span class="result-name">${r.opt.title}</span>
-        <div class="result-track"><div class="result-fill ${i===0?'top':'rest'}" style="width:${Math.min(r.avg/5,1)*100}%"></div></div>
-        <span class="result-score">${r.avg.toFixed(1)}</span>
-        ${i===0?`<span class="result-crown">👑</span>`:''}
-      </div>`).join('')}
-      <div class="voters-txt">Voted: ${voted.map(cap).join(', ')}</div>
-    </div>`;
-  } else if(slot.status!=='decided'){
-    results=`<div class="results-wrap">
-      <div class="waiting-txt">Results reveal once all ${voters.length} voter${voters.length!==1?'s':''} submit.
-        <span class="ib" tabindex="0">?<span class="ib-tip">Only ${voters.map(cap).join(' & ')} vote on this slot.</span></span>
+  // ── RANKING STEP (shown above option cards when mode includes ranking) ──
+  let rankingStep='';
+  if(hasRanking&&!myVote&&me&&iAmVoter&&slot.status!=='decided'&&opts.length){
+    const myRanks=pendingRanks[slot.id]||{};
+    rankingStep=`<div class="rank-section">
+      <div class="rank-section-label">
+        <span>Step 1 — Rank your preference</span>
+        <span style="font-size:10px;color:var(--ink3)">${Object.keys(myRanks).length}/${opts.length} ranked</span>
       </div>
-      <div class="prog-row">
-        <div class="prog-track"><div class="prog-fill" style="width:${voters.length?Math.round(voted.length/voters.length*100):0}%"></div></div>
-        <span class="prog-label">${voted.length}/${voters.length}</span>
-      </div>
-      ${voted.length?`<div class="voters-txt">In: ${voted.map(cap).join(', ')}</div>`:''}
+      ${opts.map(opt=>{
+        const myRank=myRanks[opt.id];
+        return `<div class="rank-item">
+          <div class="rank-pos-badge ${myRank?'p'+myRank:'unset'}">${myRank||'·'}</div>
+          <span class="rank-item-name">${opt.title}</span>
+          <div class="rank-num-btns">
+            ${opts.map((_,i)=>`<button class="rank-btn${myRank===i+1?' active-rank':''}"
+              onclick="setRank('${slot.id}','${opt.id}',${i+1})"
+              ontouchstart="event.preventDefault();setRank('${slot.id}','${opt.id}',${i+1})">${i+1}</button>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
     </div>`;
   }
 
+  // ── OPTION CARDS (criteria scoring inside if mode includes criteria) ──
+  const optCards=opts.map(opt=>renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter,hasRanking,hasCriteria)).join('');
+
+  // ── LIVE LEADERBOARD ──
+  let leaderboard='';
+  if(opts.length&&votes.length>0&&slot.status!=='decided'){
+    const lbData=computeLeaderboard(slot,opts,votes,voteMode);
+    const maxScore=lbData[0]?.score||1;
+    leaderboard=`<div class="leaderboard">
+      <div class="lb-header">
+        <span class="lb-title">Live standings</span>
+        <span class="lb-live"><span class="lb-live-dot"></span>${voted.length}/${voters.length} voted</span>
+      </div>
+      ${lbData.length?lbData.map((r,i)=>`<div class="lb-row">
+        <span class="lb-pos${i===0?' first':''}">${i===0?'👑':i+1}</span>
+        <span class="lb-name">${r.opt.title}</span>
+        <div class="lb-bar-wrap"><div class="lb-bar-bg"><div class="lb-bar-fill ${i===0?'top':'rest'}" style="width:${maxScore>0?Math.round(r.score/maxScore*100):0}%"></div></div></div>
+        <span class="lb-score">${r.score.toFixed(0)}pt</span>
+      </div>`).join(''):`<div class="no-votes-yet">No votes yet</div>`}
+      ${voteMode==='both'?`<div class="lb-breakdown"><span>🏆 Ranking <strong>70%</strong></span><span>⭐ Criteria <strong>30%</strong></span></div>`:''}
+    </div>`;
+  } else if(opts.length&&slot.status!=='decided'&&!votes.length){
+    leaderboard=`<div class="leaderboard"><div class="lb-header"><span class="lb-title">Live standings</span><span class="lb-live"><span class="lb-live-dot" style="background:var(--ink3)"></span>Waiting for first vote</span></div><div class="no-votes-yet">Leaderboard appears once someone votes</div></div>`;
+  }
+
+  // ── FINAL RESULTS (when decided) ──
+  let finalResults='';
+  if(slot.status==='decided'&&opts.length){
+    const lbData=computeLeaderboard(slot,opts,votes,voteMode);
+    const maxScore=lbData[0]?.score||1;
+    finalResults=`<div class="leaderboard">
+      <div class="lb-header"><span class="lb-title">Final results</span><span style="font-size:10px;color:var(--green)">Decided</span></div>
+      ${lbData.map((r,i)=>`<div class="lb-row">
+        <span class="lb-pos${i===0?' first':''}">${i===0?'👑':i+1}</span>
+        <span class="lb-name">${r.opt.title}</span>
+        <div class="lb-bar-wrap"><div class="lb-bar-bg"><div class="lb-bar-fill ${i===0?'top':'rest'}" style="width:${maxScore>0?Math.round(r.score/maxScore*100):0}%"></div></div></div>
+        <span class="lb-score">${r.score.toFixed(0)}pt</span>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  // ── FOOTER ACTIONS ──
   let footer='';
   if(slot.status==='decided'){
     const chosen=opts.find(o=>o.id===slot.chosen_option_id);
@@ -851,18 +966,24 @@ function renderVoteSlot(slot,members){
   } else if(myVote){
     footer=`<div class="voted-ok">✓ Your vote is in</div>`;
     if(isCreator&&allVoted&&opts.length){
-      const top=rankOpts(opts,votes,criteria)[0];
+      const top=computeLeaderboard(slot,opts,votes,voteMode)[0];
       footer+=`<button class="btn-main green-btn" style="margin-top:8px" onclick="confirmDecision('${slot.id}','${top?.opt.id}')">Confirm: ${top?.opt.title||'winner'}</button>`;
     }
   } else if(opts.length){
-    const allTouched=opts.every(o=>touchedOpts[`${slot.id}-${o.id}`]);
-    footer=`<button class="btn-main gold-btn" ${allTouched?'':'disabled'} id="vote-btn-${slot.id}" onclick="submitVote('${slot.id}')">Submit my votes</button>
-      ${!allTouched?`<div class="vote-hint">Rate every option above to unlock <span class="ib" tabindex="0">?<span class="ib-tip">Tap at least one star on each option first.</span></span></div>`:''}`;
+    const rankOk=!hasRanking||Object.keys(pendingRanks[slot.id]||{}).length===opts.length;
+    const critOk=!hasCriteria||opts.every(o=>touchedOpts[`${slot.id}-${o.id}`]);
+    const canSubmit=rankOk&&critOk;
+    let hint='';
+    if(!rankOk)hint='Rank all options above first';
+    else if(!critOk)hint='Score all options on criteria above';
+    footer=`<button class="btn-main gold-btn" ${canSubmit?'':'disabled'} id="vote-btn-${slot.id}" onclick="submitVote('${slot.id}')">${hasRanking&&hasCriteria?'Submit ranking + scores':'Submit vote'}</button>
+      ${!canSubmit?`<div class="vote-hint">${hint}</div>`:''}`;
   } else {
     footer=`<div class="vote-hint">Add options to begin.</div>`;
   }
 
-  const subsetNote=isSubset?`<span style="color:var(--ink3);margin-left:6px">· voters: ${voters.map(cap).join(', ')}</span>`:'';
+  const modeLabel={'ranking':'🏆 Ranking','criteria':'⭐ Criteria','both':'🏆⭐ Both (70/30)'}[voteMode]||'';
+  const subsetNote=isSubset?` · ${voters.map(cap).join(', ')} vote`:'';
   const editDel=isCreator?`<button class="btn-micro" onclick="openSlotModal('${slot.id}');event.stopPropagation()">Edit</button><button class="btn-micro danger" onclick="deleteSlot('${slot.id}');event.stopPropagation()">Delete</button>`:'';
 
   return `<div class="slot-card" id="slot-${slot.id}">
@@ -871,15 +992,16 @@ function renderVoteSlot(slot,members){
       <div class="slot-main">
         <div class="slot-eyebrow">${slot.date?fmtDate(slot.date):'Date TBD'}${subsetNote}</div>
         <div class="slot-title">${slot.title}</div>
-        <div class="slot-meta">${criteria.join(' · ')||'No criteria set'}</div>
+        <div class="slot-meta"><span class="mode-tag ${voteMode}">${modeLabel}</span>${hasCriteria&&criteria.length?' · '+criteria.join(' · '):''}</div>
       </div>
       <div class="slot-right">${editDel}<span class="badge ${sc}">${sl}</span><span class="chevron" id="chev-${slot.id}">▾</span></div>
     </div>
     <div class="slot-body" id="body-${slot.id}">
+      ${rankingStep}
       <div class="options-wrap">${optCards||`<div class="empty-slot">No options yet.</div>`}</div>
       <div style="padding:0 18px 8px"><button class="btn-outline" onclick="openOptModal('${slot.id}')">+ Add option</button></div>
       <div class="slot-foot">${footer}</div>
-      ${results}
+      ${leaderboard}${finalResults}
     </div>
   </div>`;
 }
@@ -922,14 +1044,15 @@ function renderFixedSlot(slot,members){
   </div>`;
 }
 
-function renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter){
-  const isWinner=allVoted&&rankOpts(S.options[slot.id]||[],S.votes[slot.id]||[],criteria)[0]?.opt.id===opt.id;
+function renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter,hasRanking,hasCriteria){
   const isChosen=slot.chosen_option_id===opt.id;
   const canEdit=opt.created_by===me||S.trip?.created_by===me;
+  const stepLabel=hasRanking&&hasCriteria?'Step 2 — ':'';
 
   let voteUI='';
-  if(!myVote&&me&&iAmVoter&&slot.status!=='decided'){
-    voteUI=`<div class="vote-block"><div class="vote-section-label">Your score</div>
+  if(!myVote&&me&&iAmVoter&&slot.status!=='decided'&&hasCriteria&&criteria.length){
+    voteUI=`<div class="vote-block">
+      <div class="vote-section-label">${stepLabel}Score on criteria</div>
       ${criteria.map(c=>`<div class="crit-row">
         <span class="crit-label">${c}</span>
         <div class="stars" id="stars-${opt.id}-${c}">
@@ -948,7 +1071,7 @@ function renderOptCard(opt,slot,myVote,criteria,allVoted,iAmVoter){
     <button class="btn-micro danger" onclick="deleteOpt('${slot.id}','${opt.id}')">Delete</button>
   </div>`:'';
 
-  return `<div class="opt-card${isWinner&&allVoted?' winner-card':''}">
+  return `<div class="opt-card${isChosen?' winner-card':''}">
     <div class="opt-img">${opt.image_url?`<img src="${opt.image_url}" alt="${opt.title}" onerror="this.parentElement.textContent='🏕️'" loading="lazy">`:'🏕️'}</div>
     <div class="opt-body">
       <div class="opt-name">${opt.title}${isChosen?` <span class="chosen-tag">✓ chosen</span>`:''}</div>
@@ -1050,13 +1173,25 @@ function shareItinerary(){
   else navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard!','ok')).catch(()=>toast('Copy failed','err'));
 }
 
-// ── SLOT TYPE ──
+// ── SLOT TYPE + VOTE MODE ──
 function setSlotType(type){
   currentSlotType=type;
   document.getElementById('type-vote-btn').className='type-btn'+(type==='vote'?' t-active-vote':'');
   document.getElementById('type-fixed-btn').className='type-btn'+(type==='fixed'?' t-active-fixed':'');
   document.getElementById('vote-fields').style.display=type==='vote'?'block':'none';
   document.getElementById('fixed-fields').style.display=type==='fixed'?'block':'none';
+}
+function setVoteMode(mode){
+  currentVoteMode=mode;
+  ['ranking','criteria','both'].forEach(m=>{
+    const el=document.getElementById('vm-'+m);
+    if(el)el.classList.toggle('selected',m===mode);
+  });
+  // show criteria field only when mode includes criteria
+  const showCrit=mode==='criteria'||mode==='both';
+  const cf=document.getElementById('criteria-field');
+  if(cf)cf.style.display=showCrit?'block':'none';
+  document.getElementById('sf-mode-err').textContent='';
 }
 
 function buildVoterChecklist(selected){
@@ -1104,15 +1239,20 @@ async function saveSlot(){
   const title=document.getElementById('sf-title').value.trim();
   if(!title)return toast('Add a title','err');
   const isFixed=currentSlotType==='fixed';
-  let criteria=[],voters=[];
+  let criteria=[],voters=[],voteMode='criteria';
   if(!isFixed){
-    criteria=document.getElementById('sf-criteria').value.split(',').map(s=>s.trim()).filter(Boolean);
-    if(!criteria.length){document.getElementById('sf-criteria-err').textContent='At least one criterion required';return;}
-    document.getElementById('sf-criteria-err').textContent='';
+    if(!currentVoteMode){document.getElementById('sf-mode-err').textContent='Choose a voting mode above';return;}
+    voteMode=currentVoteMode;
+    const hasCrit=voteMode==='criteria'||voteMode==='both';
+    if(hasCrit){
+      criteria=document.getElementById('sf-criteria').value.split(',').map(s=>s.trim()).filter(Boolean);
+      if(!criteria.length){document.getElementById('sf-criteria-err').textContent='At least one criterion required';return;}
+      document.getElementById('sf-criteria-err').textContent='';
+    }
     voters=getSelectedVoters();
   }
   const existing=editingSlotId?S.slots.find(s=>s.id===editingSlotId):null;
-  const data={trip_id:S.trip.id,title,date:document.getElementById('sf-date').value||null,criteria,voters,slot_type:isFixed?'fixed':'vote',slot_order:existing?existing.slot_order:S.slots.length,status:isFixed?'decided':existing?.status||'deciding',chosen_option_id:existing?.chosen_option_id||null,created_by:existing?.created_by||me};
+  const data={trip_id:S.trip.id,title,date:document.getElementById('sf-date').value||null,criteria,voters,vote_mode:voteMode,slot_type:isFixed?'fixed':'vote',slot_order:existing?existing.slot_order:S.slots.length,status:isFixed?'decided':existing?.status||'deciding',chosen_option_id:existing?.chosen_option_id||null,created_by:existing?.created_by||me};
   loading(true);
   let slotId=editingSlotId;
   if(editingSlotId){
@@ -1192,13 +1332,20 @@ async function submitVote(slotId){
   if(!me)return toast('Select your name first','err');
   const slot=S.slots.find(s=>s.id===slotId);
   const opts=S.options[slotId]||[],criteria=slot?.criteria||[];
+  const voteMode=slot?.vote_mode||'criteria';
+  const hasRanking=voteMode==='ranking'||voteMode==='both';
+  const hasCriteria=voteMode==='criteria'||voteMode==='both';
   const sc={};
-  for(const opt of opts){sc[opt.id]={};for(const c of criteria)sc[opt.id][c]=scores[`${slotId}-${opt.id}-${c}`]||3;}
+  for(const opt of opts){
+    sc[opt.id]={};
+    if(hasRanking){const r=pendingRanks[slotId]?.[opt.id];if(r)sc[opt.id].rank=r;}
+    if(hasCriteria){for(const c of criteria)sc[opt.id][c]=scores[`${slotId}-${opt.id}-${c}`]||3;}
+  }
   const vd={slot_id:slotId,voter_name:me,scores:sc};
   loading(true);
   if(DEMO){S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);S.votes[slotId].push({id:'v'+Date.now(),...vd});}
   else{await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=representation,resolution=merge-duplicates'}});S.votes[slotId]=await sbApi(`votes?slot_id=eq.${slotId}&select=*`)||[];}
-  scores={};touchedOpts={};loading(false);renderAll();toast('Vote in!','ok');
+  scores={};touchedOpts={};delete pendingRanks[slotId];loading(false);renderAll();toast('Vote in!','ok');
 }
 
 // ── STARS ──
@@ -1207,11 +1354,87 @@ function touchStar(e,optId,c,val,slotId){e.preventDefault();setStar(optId,c,val,
 function refreshStars(optId,c,val){document.querySelectorAll(`.star[data-opt="${optId}"][data-c="${c}"]`).forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.v)<=val));}
 function hoverStar(optId,c,val){document.querySelectorAll(`.star[data-opt="${optId}"][data-c="${c}"]`).forEach(s=>s.style.color=parseInt(s.dataset.v)<=val?'var(--gold)':'var(--bg3)');}
 function unhoverStar(optId,c,slotId){const cur=scores[`${slotId}-${optId}-${c}`]||0;document.querySelectorAll(`.star[data-opt="${optId}"][data-c="${c}"]`).forEach(s=>s.style.color=parseInt(s.dataset.v)<=cur?'var(--gold)':'var(--bg3)');}
-function checkVoteBtn(slotId){const all=(S.options[slotId]||[]).every(o=>touchedOpts[`${slotId}-${o.id}`]);const btn=document.getElementById(`vote-btn-${slotId}`);if(btn)btn.disabled=!all;}
+function checkVoteBtn(slotId){
+  const slot=S.slots.find(s=>s.id===slotId);
+  const voteMode=slot?.vote_mode||'criteria';
+  const hasRanking=voteMode==='ranking'||voteMode==='both';
+  const hasCriteria=voteMode==='criteria'||voteMode==='both';
+  const opts=S.options[slotId]||[];
+  const rankOk=!hasRanking||Object.keys(pendingRanks[slotId]||{}).length===opts.length;
+  const critOk=!hasCriteria||opts.every(o=>touchedOpts[`${slotId}-${o.id}`]);
+  const btn=document.getElementById(`vote-btn-${slotId}`);
+  if(btn)btn.disabled=!(rankOk&&critOk);
+}
 
-// ── RANK ──
-function rankOpts(opts,votes,criteria){
-  return opts.map(opt=>{let sum=0,cnt=0;for(const v of votes){const s=v.scores?.[opt.id];if(s)for(const c of criteria){sum+=Number(s[c])||0;cnt++;}}return{opt,avg:cnt?sum/cnt:0};}).sort((a,b)=>b.avg-a.avg);
+// ── RANKING ──
+function setRank(slotId,optId,rank){
+  if(!pendingRanks[slotId])pendingRanks[slotId]={};
+  // clear any other option that had this rank
+  for(const [oid,r] of Object.entries(pendingRanks[slotId])){if(r===rank&&oid!==optId)delete pendingRanks[slotId][oid];}
+  pendingRanks[slotId][optId]=rank;
+  checkVoteBtn(slotId);
+  // re-render just the ranking step to show updated state
+  const slot=S.slots.find(s=>s.id===slotId);
+  const members=S.trip?.member_names||[];
+  const votes=S.votes[slotId]||[];
+  const myVote=votes.find(v=>v.voter_name===me);
+  const opts=S.options[slotId]||[];
+  if(!myVote&&me&&opts.length){
+    const myRanks=pendingRanks[slotId]||{};
+    const rankSection=document.querySelector(`#slot-${slotId} .rank-section`);
+    if(rankSection){
+      // update pos badges and active rank buttons
+      opts.forEach(opt=>{
+        const badge=rankSection.querySelector(`.rank-item:has([onclick*="${opt.id}"]) .rank-pos-badge`);
+        const r=myRanks[opt.id];
+        if(badge){badge.className=`rank-pos-badge ${r?'p'+r:'unset'}`;badge.textContent=r||'·';}
+        rankSection.querySelectorAll(`.rank-btn`).forEach(btn=>{
+          const onc=btn.getAttribute('onclick')||'';
+          if(onc.includes(`'${opt.id}'`)){
+            const n=parseInt(btn.textContent);
+            btn.classList.toggle('active-rank',myRanks[opt.id]===n);
+          }
+        });
+      });
+      const countEl=rankSection.querySelector('.rank-section-label span:last-child');
+      if(countEl)countEl.textContent=`${Object.keys(myRanks).length}/${opts.length} ranked`;
+    }
+  }
+}
+
+// ── COMPUTE LEADERBOARD (Borda count for ranking, avg for criteria, 70/30 combined) ──
+function computeLeaderboard(slot,opts,votes,voteMode){
+  const hasRanking=voteMode==='ranking'||voteMode==='both';
+  const hasCriteria=voteMode==='criteria'||voteMode==='both';
+  const criteria=slot.criteria||[];
+  const n=opts.length;
+  return opts.map(opt=>{
+    let rankScore=0,critScore=0;
+    let rankVoters=0,critVoters=0;
+    for(const v of votes){
+      const s=v.scores?.[opt.id];
+      if(!s)continue;
+      if(hasRanking&&s.rank){
+        // Borda: 1st=n pts, 2nd=n-1 pts, etc.
+        rankScore+=(n-s.rank+1);
+        rankVoters++;
+      }
+      if(hasCriteria&&criteria.length){
+        let sum=0,cnt=0;
+        for(const c of criteria){if(s[c]){sum+=Number(s[c]);cnt++;}}
+        if(cnt){critScore+=sum/cnt;critVoters++;}
+      }
+    }
+    const avgRank=rankVoters?rankScore/rankVoters:0;
+    const avgCrit=critVoters?critScore/critVoters:0;
+    // Normalise rank to 0-5 scale (max Borda = n, min = 1)
+    const normRank=n>1?avgRank/(n)*5:avgRank;
+    let combined=0;
+    if(voteMode==='both')combined=normRank*0.7+avgCrit*0.3;
+    else if(voteMode==='ranking')combined=normRank;
+    else combined=avgCrit;
+    return{opt,score:combined*20}; // scale to 0-100 points for readability
+  }).sort((a,b)=>b.score-a.score);
 }
 
 // ── IDENTITY ──
@@ -1231,13 +1454,22 @@ function openSlotModal(slotId=null){
   editingSlotId=slotId;
   document.getElementById('slot-modal-title').textContent=slotId?'Edit slot':'Add slot';
   document.getElementById('sf-criteria-err').textContent='';
+  document.getElementById('sf-mode-err').textContent='';
   const existing=slotId?S.slots.find(s=>s.id===slotId):null;
   const type=existing?.slot_type||'vote';
   currentSlotType=type;
+  currentVoteMode=existing?.vote_mode||null;
   document.getElementById('sf-title').value=existing?.title||'';
   document.getElementById('sf-date').value=existing?.date||'';
   document.getElementById('sf-criteria').value=(existing?.criteria||['price','location','vibe']).join(',');
   setSlotType(type);
+  // restore vote mode selection
+  ['ranking','criteria','both'].forEach(m=>{
+    const el=document.getElementById('vm-'+m);
+    if(el)el.classList.toggle('selected',m===currentVoteMode);
+  });
+  const cf=document.getElementById('criteria-field');
+  if(cf)cf.style.display=(currentVoteMode==='criteria'||currentVoteMode==='both')?'block':'none';
   document.getElementById('voter-checklist').innerHTML=buildVoterChecklist(existing?.voters||[]);
   openModal('modal-slot');
 }
