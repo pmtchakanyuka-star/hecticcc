@@ -684,11 +684,14 @@ async function loadTrip(tripId){
       S.trip=allTrips.find(t=>t.id===tripId)||null;
       S.slots=await sbApi(`slots?trip_id=eq.${tripId}&select=*&order=slot_order,date`)||[];
       S.options={};S.votes={};
+      // Fetch all options and votes for this trip in bulk
+      const tripOptions=await sbApi(`options?slot_id=in.(${S.slots.map(s=>s.id).join(',')||'null'})&select=*&order=option_order`)||[];
+      const tripVotes=await sbApi(`votes?slot_id=in.(${S.slots.map(s=>s.id).join(',')||'null'})&select=*`)||[];
       for(const s of S.slots){
-        S.options[s.id]=await sbApi(`options?slot_id=eq.${s.id}&select=*&order=option_order`)||[];
-        S.votes[s.id]=await sbApi(`votes?slot_id=eq.${s.id}&select=*`)||[];
+        S.options[s.id]=tripOptions.filter(o=>o.slot_id===s.id);
+        S.votes[s.id]=tripVotes.filter(v=>v.slot_id===s.id);
       }
-    }catch{toast('Connection error','err');}
+    }catch(e){console.error('Load trip error:',e);toast('Connection error','err');}
   }
   currentScreen='trip';
   currentTab='decisions';
@@ -941,7 +944,7 @@ function renderVoteSlot(slot,members){
 
   // ── LIVE LEADERBOARD ──
   let leaderboard='';
-  if(opts.length&&votes.length>0&&slot.status!=='decided'){
+  if(opts.length&&slot.status!=='decided'){
     const lbData=computeLeaderboard(slot,opts,votes,voteMode);
     const maxScore=lbData[0]?.score||1;
     leaderboard=`<div class="leaderboard">
@@ -1413,7 +1416,7 @@ async function submitVote(slotId){
   // ── STEP 2: Save to Supabase ──
   if(!DEMO){
     // Use upsert via on_conflict — single call, atomic, no race condition
-    const res=await fetch(`${SB_URL}/rest/v1/votes`,{
+    const res=await fetch(`${SB_URL}/rest/v1/votes?on_conflict=slot_id,voter_name`,{
       method:'POST',
       headers:{
         apikey:SB_KEY,
@@ -1501,32 +1504,42 @@ function computeLeaderboard(slot,opts,votes,voteMode){
   const hasCriteria=voteMode==='criteria'||voteMode==='both';
   const criteria=slot.criteria||[];
   const n=opts.length;
+  if(!votes.length||!opts.length)return opts.map(opt=>({opt,score:0}));
+
   return opts.map(opt=>{
     let rankScore=0,critScore=0;
     let rankVoters=0,critVoters=0;
     for(const v of votes){
+      // scores can be keyed by opt.id — handle both string and object
       const s=v.scores?.[opt.id];
-      if(!s)continue;
-      if(hasRanking&&s.rank){
-        // Borda: 1st=n pts, 2nd=n-1 pts, etc.
-        rankScore+=(n-s.rank+1);
-        rankVoters++;
+      if(!s&&s!==0)continue;
+      if(hasRanking){
+        const r=typeof s==='object'?s.rank:null;
+        if(r&&Number(r)>0){
+          // Borda count: 1st place = n points, last = 1 point
+          rankScore+=(n-Number(r)+1);
+          rankVoters++;
+        }
       }
       if(hasCriteria&&criteria.length){
         let sum=0,cnt=0;
-        for(const c of criteria){if(s[c]){sum+=Number(s[c]);cnt++;}}
-        if(cnt){critScore+=sum/cnt;critVoters++;}
+        for(const c of criteria){
+          const val=typeof s==='object'?s[c]:null;
+          if(val!==null&&val!==undefined&&Number(val)>0){sum+=Number(val);cnt++;}
+        }
+        if(cnt>0){critScore+=sum/cnt;critVoters++;}
       }
     }
-    const avgRank=rankVoters?rankScore/rankVoters:0;
-    const avgCrit=critVoters?critScore/critVoters:0;
-    // Normalise rank to 0-5 scale (max Borda = n, min = 1)
-    const normRank=n>1?avgRank/(n)*5:avgRank;
+    const avgRank=rankVoters>0?rankScore/rankVoters:0;
+    const avgCrit=critVoters>0?critScore/critVoters:0;
+    // Normalise Borda to 0-5 scale
+    const maxBorda=n; const minBorda=1;
+    const normRank=n>1?(avgRank-minBorda)/(maxBorda-minBorda)*5:avgRank;
     let combined=0;
     if(voteMode==='both')combined=normRank*0.7+avgCrit*0.3;
     else if(voteMode==='ranking')combined=normRank;
     else combined=avgCrit;
-    return{opt,score:combined*20}; // scale to 0-100 points for readability
+    return{opt,score:Math.max(0,combined*20)};
   }).sort((a,b)=>b.score-a.score);
 }
 
@@ -1637,7 +1650,7 @@ async function clearMyVote(slotId){
   // Remove from Supabase
   if(!DEMO){
     try{
-      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${encodeURIComponent(me)}`,{method:'DELETE',headers:{Prefer:''}});
+      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${me}`,{method:'DELETE',headers:{Prefer:'return=minimal'}});
     }catch(e){console.error('Clear vote error:',e);}
   }
 }
