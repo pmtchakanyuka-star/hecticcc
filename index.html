@@ -588,6 +588,7 @@ let currentVoteMode=null; // 'ranking'|'criteria'|'both' — set when creator pi
 let confirmCb=null;
 let expandedTl={};
 let allTrips=[];
+let openSlots=new Set(); // track which slot bodies are expanded
 const S={trip:null,slots:[],options:{},votes:{}};
 
 // ── DEMO DATA ──
@@ -688,7 +689,16 @@ function goHome(){
   renderAll();
 }
 
-function renderAll(){renderIdZone();renderTabs();renderHeader();renderMain();}
+function renderAll(){
+  renderIdZone();renderTabs();renderHeader();renderMain();
+  // restore open slots
+  openSlots.forEach(id=>{
+    const body=document.getElementById('body-'+id);
+    const chev=document.getElementById('chev-'+id);
+    if(body){body.classList.add('open');}
+    if(chev){chev.classList.add('open');}
+  });
+}
 
 // ── HEADER STATE ──
 function renderHeader(){
@@ -1345,7 +1355,7 @@ async function submitVote(slotId){
   loading(true);
   if(DEMO){S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);S.votes[slotId].push({id:'v'+Date.now(),...vd});}
   else{await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=representation,resolution=merge-duplicates'}});S.votes[slotId]=await sbApi(`votes?slot_id=eq.${slotId}&select=*`)||[];}
-  scores={};touchedOpts={};delete pendingRanks[slotId];loading(false);renderAll();toast('Vote in!','ok');
+  scores={};touchedOpts={};delete pendingRanks[slotId];openSlots.add(slotId);loading(false);renderAll();toast('Vote in!','ok');
 }
 
 // ── STARS ──
@@ -1499,7 +1509,13 @@ async function fetchPreview(){
 }
 
 // ── UI UTILS ──
-function toggleSlot(id){const body=document.getElementById('body-'+id),chev=document.getElementById('chev-'+id);if(!body||!chev)return;const open=body.classList.toggle('open');chev.classList.toggle('open',open);}
+function toggleSlot(id){
+  const body=document.getElementById('body-'+id),chev=document.getElementById('chev-'+id);
+  if(!body||!chev)return;
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+  if(open)openSlots.add(id);else openSlots.delete(id);
+}
 function openModal(id){document.getElementById(id)?.classList.add('open');}
 function closeModal(id){document.getElementById(id)?.classList.remove('open');}
 function overlayClick(e,id){if(e.target===e.currentTarget)closeModal(id);}
