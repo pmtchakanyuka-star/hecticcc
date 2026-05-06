@@ -900,7 +900,7 @@ function renderVoteSlot(slot,members){
 
   // ── RANKING STEP (shown above option cards when mode includes ranking) ──
   let rankingStep='';
-  if(hasRanking&&!myVote&&me&&iAmVoter&&slot.status!=='decided'&&opts.length){
+  if(hasRanking&&!myVote&&me&&iAmVoter&&slot.status!=='decided'&&opts.length>1){
     const myRanks=pendingRanks[slot.id]||{};
     rankingStep=`<div class="rank-section">
       <div class="rank-section-label">
@@ -974,17 +974,17 @@ function renderVoteSlot(slot,members){
   } else if(!iAmVoter){
     footer=`<div class="vote-hint">${voters.map(cap).join(' & ')} decide this one.</div>`;
   } else if(myVote){
-    footer=`<div class="voted-ok">✓ Your vote is in</div>`;
+    footer=`<div class="voted-ok" style="cursor:pointer" onclick="showMyVote('${slot.id}')" title="Tap to see your vote">✓ Your vote is in &nbsp;·&nbsp; <span style="text-decoration:underline;opacity:0.8">see my vote</span></div>`;
     if(isCreator&&allVoted&&opts.length){
       const top=computeLeaderboard(slot,opts,votes,voteMode)[0];
       footer+=`<button class="btn-main green-btn" style="margin-top:8px" onclick="confirmDecision('${slot.id}','${top?.opt.id}')">Confirm: ${top?.opt.title||'winner'}</button>`;
     }
   } else if(opts.length){
-    const rankOk=!hasRanking||Object.keys(pendingRanks[slot.id]||{}).length===opts.length;
+    const rankOk=!hasRanking||opts.length<=1||Object.keys(pendingRanks[slot.id]||{}).length===opts.length;
     const critOk=!hasCriteria||opts.every(o=>touchedOpts[`${slot.id}-${o.id}`]);
     const canSubmit=rankOk&&critOk;
     let hint='';
-    if(!rankOk)hint='Rank all options above first';
+    if(!rankOk)hint=`Rank all ${opts.length} options above first`;
     else if(!critOk)hint='Score all options on criteria above';
     footer=`<button class="btn-main gold-btn" ${canSubmit?'':'disabled'} id="vote-btn-${slot.id}" onclick="submitVote('${slot.id}')">${hasRanking&&hasCriteria?'Submit ranking + scores':'Submit vote'}</button>
       ${!canSubmit?`<div class="vote-hint">${hint}</div>`:''}`;
@@ -1348,7 +1348,7 @@ async function submitVote(slotId){
   const sc={};
   for(const opt of opts){
     sc[opt.id]={};
-    if(hasRanking){const r=pendingRanks[slotId]?.[opt.id];if(r)sc[opt.id].rank=r;}
+    if(hasRanking){const r=pendingRanks[slotId]?.[opt.id]||(opts.length===1?1:null);if(r)sc[opt.id].rank=r;}
     if(hasCriteria){for(const c of criteria)sc[opt.id][c]=scores[`${slotId}-${opt.id}-${c}`]||3;}
   }
   const vd={slot_id:slotId,voter_name:me,scores:sc};
@@ -1370,7 +1370,7 @@ function checkVoteBtn(slotId){
   const hasRanking=voteMode==='ranking'||voteMode==='both';
   const hasCriteria=voteMode==='criteria'||voteMode==='both';
   const opts=S.options[slotId]||[];
-  const rankOk=!hasRanking||Object.keys(pendingRanks[slotId]||{}).length===opts.length;
+  const rankOk=!hasRanking||opts.length<=1||Object.keys(pendingRanks[slotId]||{}).length===opts.length;
   const critOk=!hasCriteria||opts.every(o=>touchedOpts[`${slotId}-${o.id}`]);
   const btn=document.getElementById(`vote-btn-${slotId}`);
   if(btn)btn.disabled=!(rankOk&&critOk);
@@ -1445,6 +1445,67 @@ function computeLeaderboard(slot,opts,votes,voteMode){
     else combined=avgCrit;
     return{opt,score:combined*20}; // scale to 0-100 points for readability
   }).sort((a,b)=>b.score-a.score);
+}
+
+// ── MY VOTE VIEWER ──
+function showMyVote(slotId){
+  const slot=S.slots.find(s=>s.id===slotId);
+  const votes=S.votes[slotId]||[];
+  const myVote=votes.find(v=>v.voter_name===me);
+  const opts=S.options[slotId]||[];
+  const voteMode=slot?.vote_mode||'criteria';
+  const hasRanking=voteMode==='ranking'||voteMode==='both';
+  const hasCriteria=voteMode==='criteria'||voteMode==='both';
+  const criteria=slot?.criteria||[];
+  if(!myVote){toast('No vote found','err');return;}
+
+  // build ranked list
+  let html='';
+  if(hasRanking){
+    const ranked=opts.map(opt=>({opt,rank:myVote.scores?.[opt.id]?.rank||99})).sort((a,b)=>a.rank-b.rank);
+    html+=`<div style="margin-bottom:16px">
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">My ranking</div>
+      ${ranked.map((r,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="width:24px;height:24px;border-radius:50%;background:${i===0?'var(--gold)':'var(--bg3)'};color:${i===0?'#000':'var(--ink2)'};display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;font-weight:700;flex-shrink:0">${r.rank<99?r.rank:'—'}</div>
+        <span style="font-family:var(--fh);font-size:14px;font-weight:600">${r.opt.title}</span>
+      </div>`).join('')}
+    </div>`;
+  }
+  if(hasCriteria&&criteria.length){
+    html+=`<div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">My criteria scores</div>
+      ${opts.map(opt=>`<div style="margin-bottom:12px">
+        <div style="font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:5px">${opt.title}</div>
+        ${criteria.map(c=>{
+          const val=myVote.scores?.[opt.id]?.[c]||0;
+          return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:11px;color:var(--ink3);width:64px;text-transform:capitalize">${c}</span>
+            <span style="color:var(--gold);font-size:14px;letter-spacing:1px">${'★'.repeat(val)}${'☆'.repeat(5-val)}</span>
+            <span style="font-size:11px;color:var(--ink3)">${val}/5</span>
+          </div>`;
+        }).join('')}
+      </div>`).join('')}
+    </div>`;
+  }
+
+  // inject into modal
+  const existing=document.getElementById('myvote-content');
+  if(existing){existing.innerHTML=html;openModal('modal-myvote');return;}
+
+  // create modal on the fly if not in DOM
+  const overlay=document.createElement('div');
+  overlay.className='modal-overlay';overlay.id='modal-myvote';
+  overlay.onclick=e=>{if(e.target===overlay)overlay.remove();};
+  overlay.innerHTML=`<div class="modal-sheet"><div class="modal-pull"><div class="modal-pull-bar"></div></div>
+    <div class="modal-body">
+      <div class="modal-title">My vote</div>
+      ${html}
+      <div class="modal-footer" style="margin-top:12px">
+        <button class="btn-main green-btn" onclick="document.getElementById('modal-myvote').remove()">Close</button>
+      </div>
+    </div></div>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>overlay.classList.add('open'));
 }
 
 // ── IDENTITY ──
