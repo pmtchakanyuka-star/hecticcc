@@ -933,7 +933,10 @@ function renderVoteSlot(slot,members){
     leaderboard=`<div class="leaderboard">
       <div class="lb-header">
         <span class="lb-title">Live standings</span>
-        <span class="lb-live"><span class="lb-live-dot"></span>${voted.length}/${voters.length} voted</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="lb-live"><span class="lb-live-dot"></span>${voted.length}/${voters.length} voted</span>
+          <span style="font-size:10px;color:var(--ink3);cursor:pointer;text-decoration:underline" onclick="refreshVotes('${slot.id}')">refresh</span>
+        </div>
       </div>
       ${lbData.length?lbData.map((r,i)=>`<div class="lb-row">
         <span class="lb-pos${i===0?' first':''}">${i===0?'👑':i+1}</span>
@@ -974,7 +977,8 @@ function renderVoteSlot(slot,members){
   } else if(!iAmVoter){
     footer=`<div class="vote-hint">${voters.map(cap).join(' & ')} decide this one.</div>`;
   } else if(myVote){
-    footer=`<div class="voted-ok" style="cursor:pointer" onclick="showMyVote('${slot.id}')" title="Tap to see your vote">✓ Your vote is in &nbsp;·&nbsp; <span style="text-decoration:underline;opacity:0.8">see my vote</span></div>`;
+    footer=`<div class="voted-ok" style="cursor:pointer" onclick="showMyVote('${slot.id}')" title="Tap to see your vote">✓ Your vote is in &nbsp;·&nbsp; <span style="text-decoration:underline;opacity:0.8">see my vote</span></div>
+    <button class="btn-outline" style="font-size:11px;min-height:36px" onclick="clearMyVote('${slot.id}')">Change my vote</button>`;
     if(isCreator&&allVoted&&opts.length){
       const top=computeLeaderboard(slot,opts,votes,voteMode)[0];
       footer+=`<button class="btn-main green-btn" style="margin-top:8px" onclick="confirmDecision('${slot.id}','${top?.opt.id}')">Confirm: ${top?.opt.title||'winner'}</button>`;
@@ -1009,7 +1013,14 @@ function renderVoteSlot(slot,members){
     <div class="slot-body" id="body-${slot.id}">
       ${rankingStep}
       <div class="options-wrap">${optCards||`<div class="empty-slot">No options yet.</div>`}</div>
-      <div style="padding:0 18px 8px"><button class="btn-outline" onclick="openOptModal('${slot.id}')">+ Add option</button></div>
+      <div style="padding:0 18px 8px">
+        ${votes.length===0
+          ? `<button class="btn-outline" onclick="openOptModal('${slot.id}')">+ Add option</button>`
+          : isCreator
+            ? `<div style="font-size:11px;color:var(--ink3);padding:4px 0">Options locked — voting has started. <span style="text-decoration:underline;cursor:pointer;color:var(--red)" onclick="resetVotesAndUnlock('${slot.id}')">Reset votes to add options</span></div>`
+            : `<div style="font-size:11px;color:var(--ink3);padding:4px 0">Options locked once voting starts.</div>`
+        }
+      </div>
       <div class="slot-foot">${footer}</div>
       ${leaderboard}${finalResults}
     </div>
@@ -1302,7 +1313,26 @@ async function saveOption(){
     if(DEMO){const si=S.slots.findIndex(s=>s.id===activeSlotId);if(si>-1){S.slots[si].chosen_option_id=newOptId;S.slots[si].status='decided';}}
     else await sbApi(`slots?id=eq.${activeSlotId}`,{method:'PATCH',body:JSON.stringify({chosen_option_id:newOptId,status:'decided'})});
   }
-  clearOptForm();closeModal('modal-option');editingOptId=null;loading(false);renderAll();
+  clearOptForm();closeModal('modal-option');editingOptId=null;
+
+  // ── If this was a NEW option (not an edit) and votes already exist — reset all votes ──
+  if(!editingOptId){
+    const existingVotes=S.votes[activeSlotId]||[];
+    if(existingVotes.length>0){
+      // Clear locally
+      S.votes[activeSlotId]=[];
+      // Clear from Supabase
+      if(!DEMO){
+        try{
+          await sbApi(`votes?slot_id=eq.${activeSlotId}`,{method:'DELETE',headers:{Prefer:''}});
+        }catch(e){console.error('Vote reset error:',e);}
+      }
+      toast('New option added — all votes reset. Please re-vote.','err');
+    }
+  }
+
+  openSlots.add(activeSlotId);
+  loading(false);renderAll();
 }
 
 async function deleteSlot(slotId){
@@ -1331,10 +1361,15 @@ async function confirmDecision(slotId,optId){
 }
 
 async function unlockSlot(slotId){
-  const ok=await confirm2('Reopen this slot?','Votes are kept. Members can vote again.');
+  const ok=await confirm2('Reopen this slot?','The slot reopens for voting. Existing votes are kept unless you choose to reset them.');
   if(!ok)return;
   if(DEMO){const s=S.slots.find(sl=>sl.id===slotId);if(s){s.status='deciding';s.chosen_option_id=null;}}
-  else{await sbApi(`slots?id=eq.${slotId}`,{method:'PATCH',body:JSON.stringify({status:'deciding',chosen_option_id:null})});const i=S.slots.findIndex(s=>s.id===slotId);if(i>-1){S.slots[i].status='deciding';S.slots[i].chosen_option_id=null;}}
+  else{
+    await sbApi(`slots?id=eq.${slotId}`,{method:'PATCH',body:JSON.stringify({status:'deciding',chosen_option_id:null})});
+    const i=S.slots.findIndex(s=>s.id===slotId);
+    if(i>-1){S.slots[i].status='deciding';S.slots[i].chosen_option_id=null;}
+  }
+  openSlots.add(slotId);
   toast('Slot reopened','ok');renderAll();
 }
 
@@ -1352,34 +1387,30 @@ async function submitVote(slotId){
     if(hasCriteria){for(const c of criteria)sc[opt.id][c]=scores[`${slotId}-${opt.id}-${c}`]||3;}
   }
   const vd={slot_id:slotId,voter_name:me,scores:sc};
-  loading(true);
 
-  // ── OPTIMISTIC UPDATE: add vote to local state immediately so leaderboard renders now ──
+  // ── OPTIMISTIC: update local state immediately, leaderboard shows now ──
   S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);
-  S.votes[slotId].push({id:'v'+Date.now(),...vd});
+  S.votes[slotId].push({id:'v_local_'+Date.now(),...vd});
   scores={};touchedOpts={};delete pendingRanks[slotId];
   openSlots.add(slotId);
-  loading(false);
   renderAll();
   toast('Vote in!','ok');
 
-  // ── PERSIST TO SUPABASE in background (delete old + insert new) ──
+  // ── PERSIST: save to Supabase without touching local state on success ──
   if(!DEMO){
     try{
-      // Delete existing vote for this voter+slot first to avoid unique constraint issues
-      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${me}`,{method:'DELETE',headers:{Prefer:''}});
-      // Insert fresh vote
+      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${encodeURIComponent(me)}`,{method:'DELETE',headers:{Prefer:''}});
       await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=minimal'}});
-      // Re-fetch to confirm what's stored
+      // Only refresh if we get a meaningful response — merge don't replace
       const fresh=await sbApi(`votes?slot_id=eq.${slotId}&select=*`);
-      if(fresh&&fresh.length){
+      if(fresh&&Array.isArray(fresh)&&fresh.length>=S.votes[slotId].length){
         S.votes[slotId]=fresh;
         openSlots.add(slotId);
         renderAll();
       }
     }catch(e){
       console.error('Vote save error:',e);
-      toast('Vote saved locally — sync may be delayed','err');
+      toast('Saved locally — will sync on refresh','err');
     }
   }
 }
@@ -1534,6 +1565,57 @@ function showMyVote(slotId){
   requestAnimationFrame(()=>overlay.classList.add('open'));
 }
 
+// ── MANUAL VOTE REFRESH ──
+async function refreshVotes(slotId){
+  if(DEMO)return;
+  try{
+    const fresh=await sbApi(`votes?slot_id=eq.${slotId}&select=*`);
+    if(fresh&&Array.isArray(fresh)){
+      S.votes[slotId]=fresh;
+      openSlots.add(slotId);
+      renderAll();
+      toast('Votes refreshed','ok');
+    }
+  }catch(e){toast('Refresh failed','err');}
+}
+
+// ── RESET ALL VOTES (creator only — to unlock option adding) ──
+async function resetVotesAndUnlock(slotId){
+  const ok=await confirm2(
+    'Reset all votes?',
+    'This clears every vote on this slot so you can add a new option. All members will need to re-vote.',
+    'Reset votes'
+  );
+  if(!ok)return;
+  S.votes[slotId]=[];
+  openSlots.add(slotId);
+  renderAll();
+  toast('Votes cleared — you can now add options','ok');
+  if(!DEMO){
+    try{
+      await sbApi(`votes?slot_id=eq.${slotId}`,{method:'DELETE',headers:{Prefer:''}});
+    }catch(e){
+      console.error('Reset votes error:',e);
+      toast('Could not clear from database','err');
+    }
+  }
+}
+
+// ── CLEAR VOTE ──
+async function clearMyVote(slotId){
+  // Remove from local state immediately
+  S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);
+  openSlots.add(slotId);
+  renderAll();
+  toast('Vote cleared — re-vote when ready');
+  // Remove from Supabase
+  if(!DEMO){
+    try{
+      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${encodeURIComponent(me)}`,{method:'DELETE',headers:{Prefer:''}});
+    }catch(e){console.error('Clear vote error:',e);}
+  }
+}
+
 // ── IDENTITY ──
 function setMe(name){me=name.toLowerCase();localStorage.setItem('hwmb_me',me);closeModal('modal-identity');renderAll();toast(`Signed in as ${cap(name)}`,'ok');}
 function signOut(){me='';localStorage.removeItem('hwmb_me');closeModal('modal-identity');renderAll();toast('Signed out');}
@@ -1623,6 +1705,22 @@ function fmtDayLabel(d){try{return new Date(d+'T00:00:00').toLocaleDateString('e
 function fmtRange(s,e){if(!s&&!e)return'Dates TBD';const f=d=>{try{return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});}catch{return d;}};return s&&e?`${f(s)} – ${f(e)}`:f(s||e);}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){['modal-trip','modal-slot','modal-option','modal-identity'].forEach(closeModal);document.getElementById('confirm-overlay').classList.remove('open');if(confirmCb){confirmCb(false);confirmCb=null;}}});
 load();
+
+// ── AUTO-REFRESH votes for open slots every 15s ──
+setInterval(async()=>{
+  if(DEMO||currentScreen!=='trip'||!S.trip||!openSlots.size)return;
+  let changed=false;
+  for(const slotId of openSlots){
+    try{
+      const fresh=await sbApi(`votes?slot_id=eq.${slotId}&select=*`);
+      if(fresh&&Array.isArray(fresh)){
+        const oldCount=(S.votes[slotId]||[]).length;
+        if(fresh.length!==oldCount){S.votes[slotId]=fresh;changed=true;}
+      }
+    }catch(e){}
+  }
+  if(changed){renderAll();}
+},15000);
 </script>
 </body>
 </html>
