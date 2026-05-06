@@ -1353,9 +1353,35 @@ async function submitVote(slotId){
   }
   const vd={slot_id:slotId,voter_name:me,scores:sc};
   loading(true);
-  if(DEMO){S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);S.votes[slotId].push({id:'v'+Date.now(),...vd});}
-  else{await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=representation,resolution=merge-duplicates'}});S.votes[slotId]=await sbApi(`votes?slot_id=eq.${slotId}&select=*`)||[];}
-  scores={};touchedOpts={};delete pendingRanks[slotId];openSlots.add(slotId);loading(false);renderAll();toast('Vote in!','ok');
+
+  // ── OPTIMISTIC UPDATE: add vote to local state immediately so leaderboard renders now ──
+  S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);
+  S.votes[slotId].push({id:'v'+Date.now(),...vd});
+  scores={};touchedOpts={};delete pendingRanks[slotId];
+  openSlots.add(slotId);
+  loading(false);
+  renderAll();
+  toast('Vote in!','ok');
+
+  // ── PERSIST TO SUPABASE in background (delete old + insert new) ──
+  if(!DEMO){
+    try{
+      // Delete existing vote for this voter+slot first to avoid unique constraint issues
+      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${me}`,{method:'DELETE',headers:{Prefer:''}});
+      // Insert fresh vote
+      await sbApi('votes',{method:'POST',body:JSON.stringify(vd),headers:{Prefer:'return=minimal'}});
+      // Re-fetch to confirm what's stored
+      const fresh=await sbApi(`votes?slot_id=eq.${slotId}&select=*`);
+      if(fresh&&fresh.length){
+        S.votes[slotId]=fresh;
+        openSlots.add(slotId);
+        renderAll();
+      }
+    }catch(e){
+      console.error('Vote save error:',e);
+      toast('Vote saved locally — sync may be delayed','err');
+    }
+  }
 }
 
 // ── STARS ──
