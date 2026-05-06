@@ -1341,7 +1341,10 @@ async function saveOption(){
       // Clear from Supabase
       if(!DEMO){
         try{
-          await sbApi(`votes?slot_id=eq.${activeSlotId}`,{method:'DELETE',headers:{Prefer:''}});
+          await fetch(`${SB_URL}/rest/v1/votes?slot_id=eq.${activeSlotId}`,{
+            method:'DELETE',
+            headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json'}
+          });
         }catch(e){console.error('Vote reset error:',e);}
       }
       toast('New option added — all votes reset. Please re-vote.','err');
@@ -1356,7 +1359,7 @@ async function deleteSlot(slotId){
   const ok=await confirm2('Delete this slot?','All options and votes removed. Cannot be undone.');
   if(!ok)return;
   if(DEMO){S.slots=S.slots.filter(s=>s.id!==slotId);delete S.options[slotId];delete S.votes[slotId];}
-  else{await sbApi(`slots?id=eq.${slotId}`,{method:'DELETE'});S.slots=S.slots.filter(s=>s.id!==slotId);delete S.options[slotId];delete S.votes[slotId];}
+  else{await fetch(`https://ytuzsepvuzgubreagqnp.supabase.co/rest/v1/slots?id=eq.${slotId}`,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`}});S.slots=S.slots.filter(s=>s.id!==slotId);delete S.options[slotId];delete S.votes[slotId];}
   toast('Deleted','ok');renderAll();
 }
 
@@ -1364,7 +1367,7 @@ async function deleteOpt(slotId,optId){
   const ok=await confirm2('Delete this option?','Cannot be undone.');
   if(!ok)return;
   if(DEMO){S.options[slotId]=(S.options[slotId]||[]).filter(o=>o.id!==optId);}
-  else{await sbApi(`options?id=eq.${optId}`,{method:'DELETE'});S.options[slotId]=(S.options[slotId]||[]).filter(o=>o.id!==optId);}
+  else{await fetch(`https://ytuzsepvuzgubreagqnp.supabase.co/rest/v1/options?id=eq.${optId}`,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`}});S.options[slotId]=(S.options[slotId]||[]).filter(o=>o.id!==optId);}
   toast('Deleted','ok');renderAll();
 }
 
@@ -1632,7 +1635,10 @@ async function resetVotesAndUnlock(slotId){
   toast('Votes cleared — you can now add options','ok');
   if(!DEMO){
     try{
-      await sbApi(`votes?slot_id=eq.${slotId}`,{method:'DELETE',headers:{Prefer:''}});
+      await fetch(`${SB_URL}/rest/v1/votes?slot_id=eq.${slotId}`,{
+        method:'DELETE',
+        headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json'}
+      });
     }catch(e){
       console.error('Reset votes error:',e);
       toast('Could not clear from database','err');
@@ -1642,15 +1648,16 @@ async function resetVotesAndUnlock(slotId){
 
 // ── CLEAR VOTE ──
 async function clearMyVote(slotId){
-  // Remove from local state immediately
   S.votes[slotId]=(S.votes[slotId]||[]).filter(v=>v.voter_name!==me);
   openSlots.add(slotId);
   renderAll();
   toast('Vote cleared — re-vote when ready');
-  // Remove from Supabase
   if(!DEMO){
     try{
-      await sbApi(`votes?slot_id=eq.${slotId}&voter_name=eq.${me}`,{method:'DELETE',headers:{Prefer:'return=minimal'}});
+      await fetch(`${SB_URL}/rest/v1/votes?slot_id=eq.${slotId}&voter_name=eq.${me}`,{
+        method:'DELETE',
+        headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json'}
+      });
     }catch(e){console.error('Clear vote error:',e);}
   }
 }
